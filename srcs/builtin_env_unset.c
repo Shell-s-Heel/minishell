@@ -12,56 +12,49 @@ int			env_builtin(t_list **env, t_command *cmd)
 	return (0);
 }
 
-int			export_unset_error(t_list **env, t_command *cmd, t_list **export)
+static int	check_unset_arg(char *arg, t_command *cmd)
 {
-	size_t	i;
 	int		ret;
+	int		i;
 
-	i = 0;
-	ret = -1;
-	while (cmd->command[1][i] && (i < ft_strclen(cmd->command[1], '=')))
+	i = -1;
+	ret = 1;
+	while (arg[++i])
+		if ((!ft_isalnum(arg[i]) && arg[i] != '_') || arg[i] == '=')
+			ret = 0;
+	if (ft_isdigit(*arg) || !ret || !*arg)
 	{
-		if (cmd->command[1][i] == '_')
-			i++;
-		else if ((ret = ft_isalnum((char)cmd->command[1][i])) == 0)
-			break ;
-		else
-			i++;
-	}
-	if ((ft_isdigit(cmd->command[1][0]) || ret == 0 || cmd->command[1][0] == '='
-		|| (ft_strcmp(&cmd->command[0][0], "unset") == 0 &&
-		ft_strchr(&cmd->command[1][0], '='))) && cmd->command[1][0] != '-')
-	{
-		error_msg("bash", cmd, cmd->command[1], "not a valid identifier");
+		error_msg("bash", cmd, arg, "not a valid identifier");
 		g_exit_status = 1;
-		return (RT_FAIL);
+		return (0);
 	}
-	else if (ft_strcmp(&cmd->command[0][0], "export") == 0)
-		export_builtin_arg(env, export, cmd);
-	return (0);
+	return (1);
 }
 
 int			unset_builtin(t_list **env, t_command *cmd, t_list **export)
 {
+	char	buf[3];
 	int		i;
 
 	i = 0;
+	buf[2] = 0;
 	update_underscore(env, last_arg(cmd));
-	if (cmd->command[0] && cmd->command[1])
+	if (!cmd->command[0] || !cmd->command[1])
+		return (RT_SUCCESS);
+	if (cmd->command[1][0] == '-')
 	{
-		while (cmd->command[++i])
-		{
-			delete_env_variable(env, cmd->command[i]);
-			delete_env_variable(export, cmd->command[i]);
-			g_exit_status = 0;
-		}
-		if (export_unset_error(env, cmd, export) == RT_FAIL)
-			return (RT_FAIL);
-		else if (cmd->command[1][0] == '-')
-		{
-			error_msg("bash", cmd, "-", "invalid option");
-			g_exit_status = 2;
-		}
+		error_msg("bash", cmd, ft_strncpy(buf, cmd->command[1], 2),
+				"invalid option");
+		g_exit_status = 2;
+		return (RT_SUCCESS);
+	}
+	while (cmd->command[++i])
+	{
+		if (!check_unset_arg(cmd->command[i], cmd))
+			continue;
+		delete_env_variable(env, cmd->command[i]);
+		delete_env_variable(export, cmd->command[i]);
+		g_exit_status = 0;
 	}
 	return (RT_SUCCESS);
 }
