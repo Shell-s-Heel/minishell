@@ -119,7 +119,7 @@ char		*save_path_env(t_list **env)
 		ft_strstr(saved_path, "/sbin") == NULL)
 	{
 		printf("\nCurrent PATH environment variable:\nPATH=%s\n\n", saved_path);
-		return (saved_path);
+		return (ft_strdup(saved_path));
 	}
 	return (ft_strdup(saved_path));
 }

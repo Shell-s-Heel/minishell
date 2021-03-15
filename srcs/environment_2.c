@@ -31,6 +31,8 @@ void		delete_env_variable(t_list **env, char *key)
 	t_list	*tmp_env;
 	t_list	*tmp;
 
+	if (!*env)
+		return ;
 	tmp_env = *env;
 	while (tmp_env->next)
 	{
