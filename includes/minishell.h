@@ -262,12 +262,11 @@ int			exit_builtin(t_command *cmd);
 int			cd_builtin(t_list **env, t_command *cmd);
 int			cd_error(int err, char *path);
 char		*check_options(t_list **env, char **cmd, int *fd, int *err);
-//char		*cd_args(t_list **env, char *arg, t_command *cmd);
 int			env_builtin(t_list **env, t_command *cmd);
 int			export_builtin(t_list **env, t_command *cmd, t_list **export);
-int			export_builtin_arg(t_list **env, t_list **export, t_command *cmd);
+void		print_export(char **export_tab, int *fd);
 int			unset_builtin(t_list **env, t_command *cmd, t_list **export);
-int			export_unset_error(t_list **env, t_command *cmd, t_list **export);
+int			is_piped(int *fd);
 
 /*
 ** Executable external functions

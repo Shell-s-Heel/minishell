@@ -89,10 +89,7 @@ int			executer(t_list **env, t_list *cmd, t_list **export, char *saved_path)
 																!= RT_SUCCESS)
 		{
 			if (ret2 == RT_NOEXIT)
-			{
-			//	ft_lstclear(&cmd, &clear_commandlist);
 				return (RT_SUCCESS);
-			}
 			return (RT_EXIT);
 		}
 		cmd = cmd->next;

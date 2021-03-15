@@ -79,11 +79,16 @@ int		main(int ac, char **av, char **ep)
 	char	**export_env_tab;
 
 	env = create_env_list(ep);
-	export_env_tab = export_env(ep);
-	export = create_env_list(export_env_tab);
 	if (increase_shlvl(&env) == RT_FAIL)
 		return (RT_FAIL);
 	if (set_pwd(&env) == RT_FAIL)
+		return (RT_FAIL);
+	export_env_tab = export_env(ep);
+	export = create_env_list(export_env_tab);
+	ft_freetab(export_env_tab);
+	if (increase_shlvl(&export) == RT_FAIL)
+		return (RT_FAIL);
+	if (set_pwd(&export) == RT_FAIL)
 		return (RT_FAIL);
 	g_exit_status = 0;
 	g_line_eraser = 0;
@@ -91,7 +96,6 @@ int		main(int ac, char **av, char **ep)
 		return (arg_command(&env, &export, ac, av));//TO DEL LATER
 	if (main_loop(&env, &export) == RT_FAIL)
 		return (RT_FAIL);
-	ft_freetab(export_env_tab);
 	ft_lstclear(&export, &clear_envlist);
 	//system("leaks minishell");
 	return (g_exit_status);
