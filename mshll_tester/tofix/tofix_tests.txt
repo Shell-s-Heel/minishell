@@ -1,5 +1,4 @@
 env | grep "_="
-export TEST=123 | cat -e | cat -e ; echo $TEST
 ~
 /Users
 .
@@ -35,8 +34,23 @@ exit exit ; echo if you see this message then your minishell have some troubles
 env | grep "_="
 export | grep "OLDPWD"
 export | grep "PWD"
+export TEST=123 ; echo $TEST
 export TEST+=100 ; echo $TEST ; export TEST+=200 ; echo $TEST
+export TEST=123 0$TEST=0123 ; echo $TEST
+export TEST ; env | grep "TEST" ; unset TEST
+export TEST= ; env | grep "TEST" ; unset TEST
+export TEST="" ; env | grep "TEST" ; unset TEST
+export TEST='' ; env | grep "TEST" ; unset TEST
+export TEST=100 TEST2=100 ; env | grep "TEST" ; unset TEST TEST2
+export TEST=100 TEST1=200 ; env | grep "TEST" ; unset TEST TEST1
+export TEST="100" ; env | grep "TEST" ; unset TEST
+export TEST='"$USER"' ; env | grep "TEST" ; unset TEST
+export TEST="$USER" ; env | grep "TEST" ; unset TEST
+export TEST="$USER$USER" ; env | grep "TEST" ; unset TEST
+export TEST="'$USER'""test" ; env | grep "TEST" ; unset TEST
+export TEST="$USER" TEST1=$TEST ; env | grep "TEST" ; unset TEST
 export TEST=LOL ; export TEST+=LOL ; env | grep "TEST" ; unset TEST
+export TEST=LOL ; export TEST-=LOL ; env | grep "TEST" ; unset TEST
 echo text > tmp/file ; echo text 1>tmp/tmp ; cat tmp/file tmp/tmp
 cat doesntexist test.sh 2>tmp/errors 1>tmp/file ; cat tmp/errors tmp/file
 cat doesntexist 2> tmp/errors 1>tmp/file ; cat tmp/errors tmp/file
@@ -77,6 +91,8 @@ echo $PWD; echo $OLDPWD; cd ////; pwd; echo $PWD; echo $OLDPWD
 echo $PWD; echo $OLDPWD; cd //////////////////////////////////////////////////////; pwd; echo $PWD; echo $OLDPWD
 echo $PWD; echo $OLDPWD; cd; echo $OLDPWD
 echo $PWD; echo $OLDPWD; cd //home; pwd; echo $PWD; echo $OLDPWD
+export TEST=100 ; echo $TEST ; unset TEST
+unset PWD ; echo $PWD
 cd ; pwd
 cd .. ; pwd
 cd /Users ; pwd

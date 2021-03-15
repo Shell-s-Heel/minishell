@@ -266,6 +266,7 @@ int			env_builtin(t_list **env, t_command *cmd);
 int			export_builtin(t_list **env, t_command *cmd, t_list **export);
 void		print_export(char **export_tab, int *fd);
 int			unset_builtin(t_list **env, t_command *cmd, t_list **export);
+int			is_piped(int *fd);
 
 /*
 ** Executable external functions

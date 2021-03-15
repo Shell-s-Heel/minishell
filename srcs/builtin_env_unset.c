@@ -31,26 +31,51 @@ static int	check_unset_arg(char *arg, t_command *cmd)
 	return (1);
 }
 
-int			unset_builtin(t_list **env, t_command *cmd, t_list **export)
+int			is_piped(int *fd)
+{
+	struct stat	fd_check;
+
+	fstat(fd[1], &fd_check);
+	if (S_ISFIFO(fd_check.st_mode))
+		return (1);
+	fstat(fd[0], &fd_check);
+	if (S_ISFIFO(fd_check.st_mode))
+		return (1);
+	return (0);
+}
+
+static int	check_option(t_command *cmd)
 {
 	char	buf[3];
-	int		i;
 
-	i = 0;
-	buf[2] = 0;
-	update_underscore(env, last_arg(cmd));
-	if (!cmd->command[0] || !cmd->command[1])
-		return (RT_SUCCESS);
+	ft_memset(buf, 0, sizeof(buf));
 	if (cmd->command[1][0] == '-')
 	{
 		error_msg("bash", cmd, ft_strncpy(buf, cmd->command[1], 2),
 				"invalid option");
 		g_exit_status = 2;
-		return (RT_SUCCESS);
+		return (1);
 	}
+	return (0);
+}
+
+int			unset_builtin(t_list **env, t_command *cmd, t_list **export)
+{
+	int		piped;
+	int		i;
+
+	i = 0;
+	update_underscore(env, last_arg(cmd));
+	if (!cmd->command[0] || !cmd->command[1])
+		return (RT_SUCCESS);
+	if (check_option(cmd))
+		return (RT_SUCCESS);
+	piped = is_piped(cmd->fd);
 	while (cmd->command[++i])
 	{
 		if (!check_unset_arg(cmd->command[i], cmd))
+			continue;
+		if (piped)
 			continue;
 		delete_env_variable(env, cmd->command[i]);
 		delete_env_variable(export, cmd->command[i]);

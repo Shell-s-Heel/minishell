@@ -38,7 +38,8 @@ static int	check_export_arg(char *arg, t_command *cmd)
 	return (1);
 }
 
-static int	export_builtin_arg(t_list **env, t_list **export, t_command *cmd)
+static int	export_builtin_arg(t_list **env, t_list **export,
+								t_command *cmd, int piped)
 {
 	int		i;
 
@@ -46,6 +47,8 @@ static int	export_builtin_arg(t_list **env, t_list **export, t_command *cmd)
 	while (cmd->command[++i])
 	{
 		if (!check_export_arg(cmd->command[i], cmd))
+			continue;
+		if (piped)
 			continue;
 		g_exit_status = 0;
 		if (ft_strchr(&cmd->command[i][0], '=') != NULL)
@@ -63,6 +66,7 @@ int			export_builtin(t_list **env, t_command *cmd, t_list **export)
 {
 	char	**export_tab;
 	char	buf[3];
+	int		piped;
 
 	update_export_underscore(env, cmd);
 	if (cmd->command[0] && !cmd->command[1])
@@ -72,7 +76,7 @@ int			export_builtin(t_list **env, t_command *cmd, t_list **export)
 		print_export(export_tab, cmd->fd);
 		ft_freetab(export_tab);
 	}
-	buf[2] = 0;
+	ft_memset(buf, 0, sizeof(buf));
 	if (cmd->command[1] && cmd->command[1][0] == '-')
 	{
 		error_msg("bash", cmd, ft_strncpy(buf, cmd->command[1], 2),
@@ -80,7 +84,8 @@ int			export_builtin(t_list **env, t_command *cmd, t_list **export)
 		g_exit_status = 2;
 		return (RT_SUCCESS);
 	}
+	piped = is_piped(cmd->fd);
 	if (cmd->command[0] && cmd->command[1])
-		export_builtin_arg(env, export, cmd);
+		export_builtin_arg(env, export, cmd, piped);
 	return (RT_SUCCESS);
 }
