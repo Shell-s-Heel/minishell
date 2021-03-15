@@ -43,7 +43,7 @@ static int	export_builtin_arg(t_list **env, t_list **export,
 {
 	int		i;
 
-	i = -1;
+	i = 0;
 	while (cmd->command[++i])
 	{
 		if (!check_export_arg(cmd->command[i], cmd))
@@ -75,6 +75,7 @@ int			export_builtin(t_list **env, t_command *cmd, t_list **export)
 			return (RT_FAIL);
 		print_export(export_tab, cmd->fd);
 		ft_freetab(export_tab);
+		return (RT_SUCCESS);
 	}
 	ft_memset(buf, 0, sizeof(buf));
 	if (cmd->command[1] && cmd->command[1][0] == '-')
