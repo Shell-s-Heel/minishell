@@ -6,15 +6,15 @@
 /*   By: jle-corr <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/23 14:26:41 by jle-corr          #+#    #+#             */
-/*   Updated: 2021/02/27 13:39:55 by jle-corr         ###   ########.fr       */
+/*   Updated: 2021/03/15 19:25:27 by whoami           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-void		*ft_freetab(char **tab)
+void	*ft_freetab(char **tab)
 {
-	int		i;
+	int	i;
 
 	i = -1;
 	while (tab[++i])

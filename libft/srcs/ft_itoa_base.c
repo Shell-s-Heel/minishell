@@ -6,13 +6,13 @@
 /*   By: jfreitas <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/21 16:36:04 by jfreitas          #+#    #+#             */
-/*   Updated: 2021/02/18 23:46:39 by jfreitas         ###   ########.fr       */
+/*   Updated: 2021/03/15 20:34:27 by whoami           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/libft.h"
 
-static	char	ft_calculate_char(int res, char c)
+static char	ft_calculate_char(int res, char c)
 {
 	char	ret_char;
 
@@ -27,23 +27,35 @@ static	char	ft_calculate_char(int res, char c)
 	return (ret_char);
 }
 
-char			*ft_itoa_base(unsigned long n, int base, char c)
+char	*nb_is_zero(unsigned long n, int n_len, int base)
+{
+	char	*str;
+
+	if (n == 0)
+	{
+		str = ft_strnew(1);
+		if (!str)
+			return (NULL);
+		*str = '0';
+		return (str);
+	}
+	n_len = ft_intlen_base(n, base);
+	str = ft_strnew(n_len);
+	return (str);
+}
+
+char	*ft_itoa_base(unsigned long n, int base, char c)
 {
 	unsigned long	nb;
 	int				res;
 	int				n_len;
 	char			*str;
 
-	if (n == 0)
-	{
-		if (!(str = ft_strnew(1)))
-			return (NULL);
-		*str = '0';
-		return (str);
-	}
+	str = nb_is_zero(n, n_len, base);
+	if (str == NULL)
+		return (NULL);
 	nb = n;
-	n_len = ft_intlen_base(n, base);
-	if (!(str = ft_strnew(n_len)))
+	if (!str)
 		return (NULL);
 	while (nb)
 	{

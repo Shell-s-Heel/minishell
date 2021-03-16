@@ -6,13 +6,13 @@
 /*   By: jfreitas <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/14 17:03:05 by jfreitas          #+#    #+#             */
-/*   Updated: 2019/12/23 17:43:58 by jfreitas         ###   ########.fr       */
+/*   Updated: 2021/03/15 19:25:54 by whoami           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/libft.h"
 
-size_t		ft_intlen(int n)
+size_t	ft_intlen(int n)
 {
 	size_t	len;
 

@@ -6,7 +6,7 @@
 /*   By: jfreitas <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/21 16:35:13 by jfreitas          #+#    #+#             */
-/*   Updated: 2019/11/21 11:58:21 by jfreitas         ###   ########.fr       */
+/*   Updated: 2021/03/15 19:46:30 by whoami           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,8 +25,8 @@ char	*ft_strtrim(char const *s1, char const *set)
 			start++;
 		len = ft_strlen(&s1[start]);
 		if (len != 0)
-			while (s1[start + len - 1] &&
-					ft_strchr(set, s1[start + len - 1]) != NULL)
+			while (s1[start + len - 1]
+				&& ft_strchr(set, s1[start + len - 1]) != NULL)
 				len--;
 		str = ft_substr(s1, start, len);
 		if (s1 == NULL || str == NULL || set == NULL)

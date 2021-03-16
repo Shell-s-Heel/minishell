@@ -6,7 +6,7 @@
 /*   By: jfreitas <jfreitas@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/19 14:48:23 by jfreitas          #+#    #+#             */
-/*   Updated: 2021/02/19 14:48:38 by jfreitas         ###   ########.fr       */
+/*   Updated: 2021/03/15 20:20:42 by whoami           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,18 +20,20 @@ void	*ft_realloc(void *ptr, size_t size)
 	{
 		if (size)
 		{
-			if (!(new_ptr = ft_memalloc(size)))
+			new_ptr = ft_memalloc(size);
+			if (!new_ptr)
 				return (NULL);
 			ft_bzero(new_ptr, size);
 			ft_memcpy(new_ptr, ptr, size);
 		}
 		else
 		{
-			if (!(new_ptr = (unsigned char*)malloc(sizeof(ptr))))
+			new_ptr = (unsigned char *)malloc(sizeof(ptr));
+			if (!new_ptr)
 				return (NULL);
 		}
 		free(ptr);
 		return (new_ptr);
 	}
-	return ((unsigned char*)malloc(sizeof(ptr) * size));
+	return ((unsigned char *)malloc(sizeof(ptr) * size));
 }

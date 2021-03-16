@@ -71,7 +71,6 @@ SRCS =	srcs/ft_atoi.c \
 		srcs/ft_strnew.c \
 		srcs/ft_strnstr.c \
 		srcs/ft_strrchr.c \
-		srcs/ft_split.c \
 		srcs/ft_strstr.c \
 		srcs/ft_substr.c \
 		srcs/ft_strtrim.c \
@@ -79,23 +78,14 @@ SRCS =	srcs/ft_atoi.c \
 		srcs/ft_toupper.c \
 		srcs/ft_intlen.c \
 		srcs/ft_islower.c \
-		srcs/ft_isupper.c \
-		srcs/join_newstr.c \
-		srcs/ft_lstnew_bonus.c \
-		srcs/ft_lstdelone_bonus.c \
-		srcs/ft_lstclear_bonus.c \
-		srcs/ft_lstadd_front_bonus.c \
-		srcs/ft_lstiter_bonus.c \
-		srcs/ft_lstmap_bonus.c \
-		srcs/ft_lstadd_back_bonus.c \
-		srcs/ft_lstsize_bonus.c \
-		srcs/ft_lstlast_bonus.c \
+		srcs/ft_isupper.c 
 
 
-SRCS += $(addprefix srcs/, ft_lstadd_back_jb.c ft_lstdelone_jb.c \
-		ft_lstmap_jb.c ft_lstadd_front_jb.c ft_lstiter_jb.c ft_lstnew_jb.c \
-		ft_lstclear_jb.c ft_lstlast_jb.c ft_lstsize_jb.c get_next_line.c \
-		ft_split_jb.c ft_freetab.c)
+SRCS += $(addprefix srcs/, ft_lstadd_back_jb_bonus.c ft_lstdelone_jb_bonus.c \
+		ft_lstmap_jb_bonus.c ft_lstadd_front_jb_bonus.c ft_lstiter_jb_bonus.c \
+		ft_lstnew_jb_bonus.c ft_lstclear_jb_bonus.c ft_lstlast_jb_bonus.c \
+		ft_lstsize_jb_bonus.c get_next_line.c ft_split_jb.c ft_freetab.c \
+		join_newstr.c)
 
 OBJ = $(SRCS:srcs/%.c=$(OBJDIR)/%.o)
 
