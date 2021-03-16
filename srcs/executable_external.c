@@ -28,6 +28,8 @@ static int	parent_process(pid_t pid, char *pathcmd, char **env_tab)
 	else if (WIFSIGNALED(wstatus))
 		g_exit_status = WTERMSIG(wstatus);
 	signal(SIGQUIT, ctrl_back_slash_handler);
+	if (g_exit_status == 3)
+		g_exit_status = 131;
 	return (RT_SUCCESS);
 }
 
