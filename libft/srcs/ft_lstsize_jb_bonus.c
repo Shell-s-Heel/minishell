@@ -1,23 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_lstdelone_bonus.c                               :+:      :+:    :+:   */
+/*   ft_lstsize_jb_bonus.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jfreitas <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: jle-corr <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/08/24 17:32:30 by jfreitas          #+#    #+#             */
-/*   Updated: 2019/11/21 15:15:27 by jfreitas         ###   ########.fr       */
+/*   Created: 2021/03/15 20:47:50 by whoami            #+#    #+#             */
+/*   Updated: 2021/03/15 20:48:50 by whoami           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/libft.h"
+#include "libft.h"
 
-void	ft_lstdelone(t_list *lst, void (*del)(void *))
+int	ft_lstsize(t_list *lst)
 {
-	if (lst)
+	int	count;
+
+	if (!lst)
+		return (0);
+	count = 1;
+	while (lst->next)
 	{
-		if (del != NULL)
-			(*del)(lst->content);
-		free(lst);
+		count++;
+		lst = lst->next;
 	}
+	return (count);
 }

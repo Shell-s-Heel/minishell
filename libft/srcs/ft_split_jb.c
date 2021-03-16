@@ -6,13 +6,13 @@
 /*   By: jle-corr <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/08 18:04:52 by jle-corr          #+#    #+#             */
-/*   Updated: 2021/02/27 01:23:11 by jle-corr         ###   ########.fr       */
+/*   Updated: 2021/03/15 21:28:04 by whoami           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-int			split_counter(char const *s, char c)
+int	split_counter(char const *s, char c)
 {
 	char	*spliter;
 	int		i;
@@ -20,28 +20,49 @@ int			split_counter(char const *s, char c)
 	i = 0;
 	while (s && *s)
 	{
-		if (((spliter = ft_strchr(s, c)) - s) != 0)
+		spliter = ft_strchr(s, c);
+		if ((spliter - s) != 0)
 			i++;
-		s = (spliter ? spliter + 1 : NULL);
+		if (spliter)
+			s = spliter + 1;
+		else
+			s = NULL;
 	}
 	return (i + 1);
 }
 
-char		**ft_split_jb(char const *s, char c)
+static char const	*ternarie_ret(char const *s, char *adr)
+{
+	if (adr)
+		s = adr + 1;
+	else
+		s = NULL;
+	return (s);
+}
+
+char	**ft_split_jb(char const *s, char c)
 {
 	char	**tab;
 	char	*adr;
 	int		i;
 
-	if (!(tab = (char**)malloc(sizeof(*tab) * split_counter(s, c))))
+	tab = (char **)malloc(sizeof(*tab) * split_counter(s, c));
+	if (!tab)
 		return (NULL);
 	i = 0;
 	while (s && *s)
 	{
-		if (((adr = ft_strchr(s, c)) - s) != 0)
-			if (!(tab[i++] = ft_substr(s, 0, (adr ? adr - s : ft_strlen(s)))))
+		adr = ft_strchr(s, c);
+		if ((adr - s) != 0)
+		{
+			if (adr)
+				tab[i] = ft_substr(s, 0, adr - s);
+			else
+				tab[i] = ft_substr(s, 0, ft_strlen(s));
+			if (!tab[i++])
 				return (ft_freetab(tab));
-		s = (adr ? adr + 1 : NULL);
+		}
+		s = ternarie_ret(s, adr);
 	}
 	tab[i] = NULL;
 	return (tab);

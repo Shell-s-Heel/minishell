@@ -6,13 +6,13 @@
 /*   By: jfreitas <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/15 14:19:35 by jfreitas          #+#    #+#             */
-/*   Updated: 2019/11/14 10:54:28 by jfreitas         ###   ########.fr       */
+/*   Updated: 2021/03/15 19:31:31 by whoami           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/libft.h"
 
-int		ft_toupper(int c)
+int	ft_toupper(int c)
 {
 	if (ft_islower(c) == 1)
 		return (c - 32);

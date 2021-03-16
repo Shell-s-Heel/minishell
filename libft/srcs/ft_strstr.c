@@ -6,7 +6,7 @@
 /*   By: jfreitas <jfreitas@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/19 14:51:44 by jfreitas          #+#    #+#             */
-/*   Updated: 2021/02/19 15:03:56 by jfreitas         ###   ########.fr       */
+/*   Updated: 2021/03/15 19:33:19 by whoami           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,8 +21,8 @@ char	*ft_strstr(char const *haystack, char const *needle)
 
 	j = 0;
 	i = 1;
-	str = (char*)haystack;
-	to_find = (char*)needle;
+	str = (char *)haystack;
+	to_find = (char *)needle;
 	if (!*to_find)
 		return (str);
 	while (str[j])

@@ -1,25 +1,21 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_lstadd_back_bonus.c                             :+:      :+:    :+:   */
+/*   ft_lstadd_front_jb_bonus.c                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jfreitas <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: jle-corr <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/11/15 17:33:27 by jfreitas          #+#    #+#             */
-/*   Updated: 2021/03/06 01:10:46 by jle-corr         ###   ########.fr       */
+/*   Created: 2021/03/15 20:46:21 by whoami            #+#    #+#             */
+/*   Updated: 2021/03/15 20:49:53 by whoami           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/libft.h"
+#include "libft.h"
 
-void	ft_lstadd_back(t_list **alst, t_list *new)
+void	ft_lstadd_front(t_list **alst, t_list *new)
 {
-	t_list	*last;
-
 	if (!new)
 		return ;
-	if (!(last = ft_lstlast(*alst)))
-		ft_lstadd_front(alst, new);
-	else
-		last->next = new;
+	new->next = *alst;
+	*alst = new;
 }
