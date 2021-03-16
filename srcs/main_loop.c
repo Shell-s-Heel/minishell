@@ -62,7 +62,6 @@ int	execute_cmd(t_list **env, t_command *cmd, t_list **export, char *s_path)
 {
 	int		ret;
 
-//	print_cmd(cmd);//TEST - TO DELETE LATER
 	ret = is_builtin(cmd);
 	if (ret)
 		ret = execute_builtin(env, cmd, ret, export);
@@ -71,6 +70,10 @@ int	execute_cmd(t_list **env, t_command *cmd, t_list **export, char *s_path)
 	close_fd(cmd->fd);
 	return (ret);
 }
+
+/*
+** print_cmd(cmd);//TEST - TO DELETE LATER
+*/
 
 int	executer(t_list **env, t_list *cmd, t_list **export, char *saved_path)
 {
@@ -145,7 +148,6 @@ int	main_loop(t_list **env, t_list **export)
 		cmd = tokenizer(line);
 		if (!(cmd))
 			return (RT_FAIL);
-		//t_lstiter(cmd, &print_tok);//TO DEL LATER
 		free(line);
 		if (executer(env, cmd, export, saved_path) != RT_SUCCESS)
 			return (clear_lists_exit(&cmd, env, saved_path));
@@ -153,3 +155,7 @@ int	main_loop(t_list **env, t_list **export)
 	}
 	return (return_to_main(env, line, ret_gnl, saved_path));
 }
+
+/*
+** ft_lstiter(cmd, &print_tok);//TO DEL LATER
+*/

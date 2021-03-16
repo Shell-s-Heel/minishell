@@ -1,15 +1,3 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   executable_external_path.c                         :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: jfreitas <jfreitas@student.s19.be>         +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/02/08 19:16:50 by jfreitas          #+#    #+#             */
-/*   Updated: 2021/03/16 03:39:09 by jle-corr         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #include "minishell.h"
 
 /*
@@ -107,16 +95,16 @@ char	*relative_path(t_command *cmd, char **split_path, char *saved_path)
 	}
 	if (ret_env_path == -1)
 	{
-		if (saved_path)
-			if (!(test_path_left_right(cmd, saved_path)))
-				return ("");
+		(void)saved_path;
 		error_msg(NULL, cmd, NULL, "command not found");
 		return ("");
 	}
 	return (add_path);
 }
 
-/*
+/*		if (saved_path)
+**			if (!(test_path_left_right(cmd, saved_path)))
+**				return ("");
 ** If command starts with a ~/: (ex: ~/../../bin/ls or ~/42/minishell)
 ** Duplicate the command but starting from it's index 1 (not 0 which is the
 ** tilde) and then I add "../.." to the beginning of the command.
@@ -180,7 +168,7 @@ char	*path_to_executable(t_list **env, t_command *cmd, char *saved_path)
 	abs_path = NULL;
 	home_path = find_env_value(env, "HOME");
 	path = find_env_value(env, "PATH");
-	if (!ft_strchr(&cmd->command[0][0], '/') && cmd->command[0][0] != '.'
+	if (!ft_strchr(cmd->command[0], '/') && cmd->command[0][0] != '.'
 		&& ft_strncmp(cmd->command[0], "~/", 2) != 0)
 	{
 		if (!path || (!path && !saved_path))
