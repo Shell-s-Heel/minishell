@@ -76,8 +76,9 @@ char	**env_list_to_tab(t_list *env)
 	new_env[count] = NULL;
 	while (--count >= 0 && env != NULL)
 	{
-		tmp_str = ft_strdup(ENV_KEY(env));
-		new_env[count] = ft_strjoin(tmp_str, ENV_VALUE(env));
+		tmp_str = ft_strdup(((t_env *)((env)->content))->key);
+		new_env[count] = ft_strjoin(tmp_str,
+				((t_env *)((env)->content))->value);
 		free(tmp_str);
 		env = env->next;
 	}
@@ -106,11 +107,11 @@ void	add_env_variable(t_list **env, char *var)
 	tmp_env = *env;
 	while (tmp_env)
 	{
-		if (!ft_strcmp(new->key, ENV_KEY(tmp_env)))
+		if (!ft_strcmp(new->key, ((t_env *)((tmp_env)->content))->key))
 		{
 			free(new->key);
-			free(ENV_VALUE(tmp_env));
-			ENV_VALUE(tmp_env) = new->value;
+			free(((t_env *)((tmp_env)->content))->value);
+			((t_env *)((tmp_env)->content))->value = new->value;
 			free(new);
 			break ;
 		}
@@ -141,8 +142,8 @@ char	*find_env_value(t_list **env, char *key)
 	tmp_env = *env;
 	while (tmp_env)
 	{
-		if (!ft_strcmp(key, ENV_KEY(tmp_env)))
-			return (&ENV_VALUE(tmp_env)[1]);
+		if (!ft_strcmp(key, ((t_env *)((tmp_env)->content))->key))
+			return (&((t_env *)((tmp_env)->content))->value[1]);
 		tmp_env = tmp_env->next;
 	}
 	return (NULL);

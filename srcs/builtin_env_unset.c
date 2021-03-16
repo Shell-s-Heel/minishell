@@ -6,8 +6,8 @@ int	env_builtin(t_list **env, t_command *cmd)
 		g_exit_status = 0;
 	if ((*env)->next != NULL)
 		env_builtin(&((*env)->next), cmd);
-	ft_putstr_fd(ENV_KEY(*env), cmd->fd[1]);
-	ft_putstr_fd(ENV_VALUE(*env), cmd->fd[1]);
+	ft_putstr_fd(((t_env *)((*env)->content))->key, cmd->fd[1]);
+	ft_putstr_fd(((t_env *)((*env)->content))->value, cmd->fd[1]);
 	ft_putchar_fd('\n', cmd->fd[1]);
 	return (0);
 }

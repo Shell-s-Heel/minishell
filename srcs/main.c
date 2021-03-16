@@ -103,6 +103,9 @@ int	main(int ac, char **av, char **ep)
 	if (main_loop(&env, &export) == RT_FAIL)
 		return (RT_FAIL);
 	ft_lstclear(&export, &clear_envlist);
-	//system("leaks minishell");
 	return (g_exit_status);
 }
+
+/*
+** system("leaks minishell");
+*/

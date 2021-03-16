@@ -36,7 +36,7 @@ void	delete_env_variable(t_list **env, char *key)
 	tmp_env = *env;
 	while (tmp_env->next)
 	{
-		if (!ft_strcmp(key, ENV_KEY(tmp_env->next)))
+		if (!ft_strcmp(key, ((t_env *)((tmp_env->next)->content))->key))
 		{
 			tmp = tmp_env->next->next;
 			free_env(tmp_env->next->content, sizeof(env));
@@ -46,7 +46,7 @@ void	delete_env_variable(t_list **env, char *key)
 		}
 		tmp_env = tmp_env->next;
 	}
-	if (!ft_strcmp(key, ENV_KEY(*env)))
+	if (!ft_strcmp(key, ((t_env *)((*env)->content))->key))
 	{
 		tmp = (*env)->next;
 		free_env((*env)->content, sizeof(env));

@@ -94,7 +94,6 @@
 ** Environment control
 ** These defines shorten literals to make the code more understandable.
 ** NAME is of type t_list.
-*/
 # define ENV_KEY(NAME) ((t_env *)((NAME)->content))->key
 # define ENV_VALUE(NAME) ((t_env *)((NAME)->content))->value
 
@@ -102,6 +101,7 @@
 # define CMD_FD(NAME) ((t_command *)((NAME)->content))->fd
 
 # define COMMAND(NAME) (t_command *)((NAME)->content)
+*/
 
 /*
 ** Global variables
