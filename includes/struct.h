@@ -1,7 +1,7 @@
 #ifndef STRUCT_H
 # define STRUCT_H
 
-typedef struct	s_command
+typedef struct s_command
 {
 	char		**command;
 	char		*unexpanded;
@@ -9,8 +9,7 @@ typedef struct	s_command
 	char		*file;
 }				t_command;
 
-
-typedef struct	s_env
+typedef struct s_env
 {
 	char		*key;
 	char		*value;

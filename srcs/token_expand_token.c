@@ -4,11 +4,12 @@ static int	remove_quotes(char **str)
 {
 	char	*sub;
 	int		len;
-	
+
 	if (**str != '\'' && **str != '\"')
 		return (1);
 	len = ft_strlen(*str);
-	if (!(sub = ft_substr(*str, 1, len - 2)))
+	sub = ft_substr(*str, 1, len - 2);
+	if (!sub)
 		return (0);
 	free(*str);
 	*str = sub;
@@ -27,10 +28,14 @@ static int	join_newstr_v2(char **str, const char *src)
 	int		len;
 
 	if (!*str)
-		if (!(*str = ft_strnew(0)))
+	{
+		*str = ft_strnew(0);
+		if (!(*str))
 			return (0);
+	}
 	len = ft_strlen(*str) + ft_strlen(src);
-	if (!(tmp = ft_strnew(len)))
+	tmp = ft_strnew(len);
+	if (!tmp)
 		return (0);
 	len = -1;
 	while ((*str)[++len])
@@ -42,7 +47,7 @@ static int	join_newstr_v2(char **str, const char *src)
 	return (1);
 }
 
-char		*expand_token(t_list **env, char **line_ptr)
+char	*expand_token(t_list **env, char **line_ptr)
 {
 	char	*word_object;
 	char	*expanded;
@@ -52,7 +57,8 @@ char		*expand_token(t_list **env, char **line_ptr)
 	{
 		if (**line_ptr && (**line_ptr == '\'' || **line_ptr == '\"'))
 		{
-			if (!(word_object = quotes(env, line_ptr)))
+			word_object = quotes(env, line_ptr);
+			if (!(word_object))
 				return (NULL);
 			if (!remove_quotes(&word_object))
 				return (NULL);

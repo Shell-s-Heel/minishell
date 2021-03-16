@@ -6,30 +6,11 @@
 /*   By: jfreitas <jfreitas@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/08 19:16:50 by jfreitas          #+#    #+#             */
-/*   Updated: 2021/03/12 23:06:38 by jfreitas         ###   ########.fr       */
+/*   Updated: 2021/03/16 03:39:09 by jle-corr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-/*
-** Joining a / to the end of the absolute path (this being one of the paths
-** inside of $PATH, or the PWD absolute path).
-** Then joining the executable typed by the user to it and returning the
-** complete absolute path.
-*/
-static char	*add_path_to_cmd(char *abs_path, char *executable)
-{
-	char	*add_slash;
-	char	*add_path;
-
-	if (!(add_slash = ft_strjoin(abs_path, "/")))
-		return (NULL);
-	if (!(add_path = ft_strjoin(add_slash, executable)))
-		return (NULL);
-	ft_strdel(&add_slash);
-	return (add_path);
-}
 
 /*
 ** It opens the directories passed as absolute paths to the argum env_path.
@@ -46,17 +27,23 @@ static char	*add_path_to_cmd(char *abs_path, char *executable)
 ** mode_t        st_mode;     File type and mode
 ** S_IXUSR       00100        owner has execute permission
 */
-int			test_cmd(char *env_path, char *executable)
+int	test_cmd(char *env_path, char *executable)
 {
 	int				cmp;
 	DIR				*dp;
 	struct dirent	*dirp;
 
-	if (!(dp = opendir(env_path)))
+	dp = opendir(env_path);
+	if (!(dp))
 		return (-1);
-	while ((dirp = readdir(dp)))
-		if (!(cmp = ft_strcmp(executable, dirp->d_name)))
-			break;
+	dirp = readdir(dp);
+	while (dirp)
+	{
+		cmp = ft_strcmp(executable, dirp->d_name);
+		if (!cmp)
+			break ;
+		dirp = readdir(dp);
+	}
 	closedir(dp);
 	if (cmp == 0)
 		return (0);
@@ -64,38 +51,24 @@ int			test_cmd(char *env_path, char *executable)
 }
 
 /*
-** The reading of $PATH is done from the index last found to right.
-** To make it work starting from the next index after the last one found, we
-** would have to user a global variable. I don't think we have to go that deep
-** since the correction sheet asks only to check if we are checking the $PATH
-** from left to right (not from where it stopped on the last command, to right).
+** Joining a / to the end of the absolute path (this being one of the paths
+** inside of $PATH, or the PWD absolute path).
+** Then joining the executable typed by the user to it and returning the
+** complete absolute path.
 */
-static char		*test_path_left_right(t_command *cmd, char *saved_path)
+static char	*add_path_to_cmd(char *abs_path, char *executable)
 {
-	char	**split_path;
-	int		ret_test;
-	int		i;
-	int		j;
+	char	*add_slash;
+	char	*add_path;
 
-	i = -1;
-	j = 0;
-	ret_test = 1;
-	if (ft_strchr(saved_path, ':'))
-	{
-		if (!(split_path = ft_split_jb(&saved_path[0], ':')))
-		{
-			ft_freetab(split_path);
-			return (NULL);
-		}
-	}
-	else
-		split_path = ft_split_jb(&saved_path[0], '\0');
-	while (split_path[++i])
-		if ((ret_test = test_cmd(split_path[i], cmd->command[0])) == 0)
-			j++;
-	if (!(test_path_left_right_2(cmd, split_path, ret_test, j)))
+	add_slash = ft_strjoin(abs_path, "/");
+	if (!(add_slash))
 		return (NULL);
-	return ("");
+	add_path = ft_strjoin(add_slash, executable);
+	if (!(add_path))
+		return (NULL);
+	ft_strdel(&add_slash);
+	return (add_path);
 }
 
 /*
@@ -125,7 +98,8 @@ char	*relative_path(t_command *cmd, char **split_path, char *saved_path)
 	add_path = NULL;
 	while (split_path[++i])
 	{
-		if ((ret_env_path = test_cmd(split_path[i], cmd->command[0])) == 0)
+		ret_env_path = test_cmd(split_path[i], cmd->command[0]);
+		if ((ret_env_path) == 0)
 		{
 			add_path = add_path_to_cmd(split_path[i], cmd->command[0]);
 			break ;
@@ -133,7 +107,7 @@ char	*relative_path(t_command *cmd, char **split_path, char *saved_path)
 	}
 	if (ret_env_path == -1)
 	{
-		if (saved_path/* && ft_strcmp(path, saved_path) != 0*/)
+		if (saved_path)
 			if (!(test_path_left_right(cmd, saved_path)))
 				return ("");
 		error_msg(NULL, cmd, NULL, "command not found");
@@ -171,13 +145,56 @@ char	*absolute_path(t_command *cmd, char *home_path)
 	}
 	if (ft_strncmp(cmd->command[0], "~/", 2) == 0)
 	{
-		if (!(add_path_to_cmd = ft_strjoin(home_path, (cmd->command[0] + 1))))
+		add_path_to_cmd = ft_strjoin(home_path, (cmd->command[0] + 1));
+		if (!(add_path_to_cmd))
 			return (NULL);
 	}
 	else
 	{
-		if (!(add_path_to_cmd = ft_strdup(cmd->command[0])))
+		add_path_to_cmd = ft_strdup(cmd->command[0]);
+		if (!(add_path_to_cmd))
 			return (NULL);
 	}
 	return (add_path_to_cmd);
+}
+
+/*
+** Ex of command that is not an absolute or relative path: ls lo minishell
+**		for those, a path needs to be joined to it.
+** Ex of command that is an absolute or relative path: ~/ /bin/ls ./minishell
+**		for ~/ a path needs to be joined to it.
+**		for the rest, just duplicate it.
+**
+** Returns the absolute path command/executable (abs_path). either because it
+** was already typed like that, or because it was turned into an absolute path
+** by the funtion relative_path() or absolute_path().
+** Returns a malloc string, so it needs to be freed later on.
+*/
+char	*path_to_executable(t_list **env, t_command *cmd, char *saved_path)
+{
+	char	*abs_path;
+	char	*home_path;
+	char	*path;
+	char	**split_path;
+
+	abs_path = NULL;
+	home_path = find_env_value(env, "HOME");
+	path = find_env_value(env, "PATH");
+	if (!ft_strchr(&cmd->command[0][0], '/') && cmd->command[0][0] != '.'
+		&& ft_strncmp(cmd->command[0], "~/", 2) != 0)
+	{
+		if (!path || (!path && !saved_path))
+		{
+			error_msg("bash", cmd, NULL, strerror(2));
+			return ("");
+		}
+		split_path = ft_split_jb(path, ':');
+		if (!(split_path))
+			return (NULL);
+		abs_path = relative_path(cmd, split_path, saved_path);
+		ft_freetab(split_path);
+	}
+	else
+		abs_path = absolute_path(cmd, home_path);
+	return (abs_path);
 }

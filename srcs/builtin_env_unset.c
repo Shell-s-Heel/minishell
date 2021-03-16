@@ -1,6 +1,6 @@
 #include "minishell.h"
 
-int			env_builtin(t_list **env, t_command *cmd)
+int	env_builtin(t_list **env, t_command *cmd)
 {
 	if ((*env)->next == NULL)
 		g_exit_status = 0;
@@ -31,7 +31,7 @@ static int	check_unset_arg(char *arg, t_command *cmd)
 	return (1);
 }
 
-int			is_piped(int *fd)
+int	is_piped(int *fd)
 {
 	struct stat	fd_check;
 
@@ -52,14 +52,14 @@ static int	check_option(t_command *cmd)
 	if (cmd->command[1][0] == '-')
 	{
 		error_msg("bash", cmd, ft_strncpy(buf, cmd->command[1], 2),
-				"invalid option");
+			"invalid option");
 		g_exit_status = 2;
 		return (1);
 	}
 	return (0);
 }
 
-int			unset_builtin(t_list **env, t_command *cmd, t_list **export)
+int	unset_builtin(t_list **env, t_command *cmd, t_list **export)
 {
 	int		piped;
 	int		i;
@@ -74,9 +74,9 @@ int			unset_builtin(t_list **env, t_command *cmd, t_list **export)
 	while (cmd->command[++i])
 	{
 		if (!check_unset_arg(cmd->command[i], cmd))
-			continue;
+			continue ;
 		if (piped)
-			continue;
+			continue ;
 		delete_env_variable(env, cmd->command[i]);
 		delete_env_variable(export, cmd->command[i]);
 		g_exit_status = 0;

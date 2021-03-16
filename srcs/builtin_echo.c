@@ -1,6 +1,6 @@
 #include "minishell.h"
 
-static int		echo_n_parser(char *str)
+static int	echo_n_parser(char *str)
 {
 	if (!*str || *str != '-')
 		return (1);
@@ -15,13 +15,13 @@ static int		echo_n_parser(char *str)
 	return (0);
 }
 
-static int		print_newline(t_command *cmd)
+static int	print_newline(t_command *cmd)
 {
 	ft_putchar_fd('\n', cmd->fd[1]);
 	return (RT_SUCCESS);
 }
 
-int				echo_builtin(t_list **env, t_command *cmd)
+int	echo_builtin(t_list **env, t_command *cmd)
 {
 	int			flag;
 	int			i;

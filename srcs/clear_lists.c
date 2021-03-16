@@ -1,6 +1,6 @@
 #include "minishell.h"
 
-void		clear_envlist(void *content)
+void	clear_envlist(void *content)
 {
 	char	*keycp;
 	char	*valuecp;
@@ -12,7 +12,7 @@ void		clear_envlist(void *content)
 	free((t_env*)content);
 }
 
-void		clear_commandlist(void *content)
+void	clear_commandlist(void *content)
 {
 	int		i;
 	int		*fdcp;
@@ -35,38 +35,20 @@ void		clear_commandlist(void *content)
 	free((t_command*)content);
 }
 
-void		clear_arglist(void *content)
+void	clear_arglist(void *content)
 {
 	(void)content;
 }
 
-void		clear_arglist_2(void *content)
+void	clear_arglist_2(void *content)
 {
-	free((char*)content);
+	free((char *)content);
 }
 
-int			clear_lists_exit(t_list **cmd, t_list **env, char *saved_path)
+int	clear_lists_exit(t_list **cmd, t_list **env, char *saved_path)
 {
 	free(saved_path);
 	ft_lstclear(cmd, &clear_commandlist);
 	ft_lstclear(env, &clear_envlist);
 	return (RT_EXIT);
-}
-
-// or a function to free_env that Francois did (but to free a command typed that
-// was passed to the struct (and then linked to the list).
-
-void		ft_array_string_del(char **array)
-{
-	int		i;
-
-	if (!array)
-		return ;
-	i = 0;
-	while (array[i])
-	{
-		free(array[i]);
-		i++;
-	}
-	free(array);
 }

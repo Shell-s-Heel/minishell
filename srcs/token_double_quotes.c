@@ -1,17 +1,17 @@
 #include "minishell.h"
 
-static int		check_symbol_dq(char *str, int i)
+static int	check_symbol_dq(char *str, int i)
 {
 	if (i == 0)
-		if (*str ==  '\"')
+		if (*str == '\"')
 			return (0);
 	if (i == 1)
-		if (*str ==  '\"' && *(str - i) != '\\')
+		if (*str == '\"' && *(str - i) != '\\')
 			return (0);
 	return (1);
 }
 
-static int		expand_env_dq(t_list **env, char **final_str,
+static int	expand_env_dq(t_list **env, char **final_str,
 							char **str, char **line_ptr)
 {
 	if (!(join_str_before(str, line_ptr, final_str)))
@@ -22,11 +22,11 @@ static int		expand_env_dq(t_list **env, char **final_str,
 	return (1);
 }
 
-static int		format_special_dq(t_list **env, char **final_str,
+static int	format_special_dq(t_list **env, char **final_str,
 								char **str, char **line_ptr)
 {
-	if (**str == '\\' && (*(*str + 1) == '\"' ||
-				*(*str + 1) == '\\' || *(*str + 1) == '$'))
+	if (**str == '\\' && (*(*str + 1) == '\"'
+			|| *(*str + 1) == '\\' || *(*str + 1) == '$'))
 	{
 		if (!(escape_it(final_str, str, line_ptr)))
 			return (-1);
@@ -52,16 +52,17 @@ static int		format_special_dq(t_list **env, char **final_str,
 ** It returns a malloc() address to a null-terminated string.
 */
 
-static int		init_dq(char **final_str, char **str, char **line_ptr, int *i)
+static int	init_dq(char **final_str, char **str, char **line_ptr, int *i)
 {
-	if (!(*final_str = ft_strnew(0)))
+	*final_str = ft_strnew(0);
+	if (!(*final_str))
 		return (0);
 	*str = *line_ptr + 1;
 	*i = 0;
 	return (1);
 }
 
-char			*double_quotes(t_list **env, char **line_ptr)
+char	*double_quotes(t_list **env, char **line_ptr)
 {
 	char		*str;
 	char		*final_str;
@@ -73,12 +74,13 @@ char			*double_quotes(t_list **env, char **line_ptr)
 	while (*str)
 	{
 		if (!check_symbol_dq(str, i))
-			break;
+			break ;
 		i = 1;
-		if ((ret = format_special_dq(env, &final_str, &str, line_ptr)) == -1)
+		ret = format_special_dq(env, &final_str, &str, line_ptr);
+		if (ret == -1)
 			return (NULL);
 		else if (ret == 1)
-			continue;
+			continue ;
 		else
 			str++;
 	}

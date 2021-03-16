@@ -1,6 +1,6 @@
 #include "minishell.h"
 
-int				pwd_builtin(t_list **env, t_command *cmd)
+int	pwd_builtin(t_list **env, t_command *cmd)
 {
 	char		*stored;
 	char		*tmp;
@@ -27,7 +27,7 @@ int				pwd_builtin(t_list **env, t_command *cmd)
 ** 2. Otherwise, if there is a 2nd parameter, output the correct error message.
 */
 
-static int		exit_arg(t_command *cmd, size_t i)
+static int	exit_arg(t_command *cmd, size_t i)
 {
 	if (i == ft_strlen(cmd->command[1]))
 	{
@@ -73,7 +73,7 @@ static int		exit_arg(t_command *cmd, size_t i)
 **		not a intire numeric argument. Then, output the correct error messsage.
 */
 
-int				exit_builtin(t_command *cmd)
+int	exit_builtin(t_command *cmd)
 {
 	size_t		i;
 	long long	ret_atoi;
@@ -89,8 +89,8 @@ int				exit_builtin(t_command *cmd)
 			i++;
 		while (ft_isdigit((char)cmd->command[1][i]) == 1)
 			i++;
-		if (i != ft_strlen(cmd->command[1]) || (ret_atoi == -1 &&
-										ft_strcmp(cmd->command[1], "-1") != 0))
+		if (i != ft_strlen(cmd->command[1]) || (ret_atoi == -1
+				&& ft_strcmp(cmd->command[1], "-1") != 0))
 		{
 			error_msg("y", cmd, cmd->command[1], "numeric argument required");
 			g_exit_status = 2;

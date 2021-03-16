@@ -1,6 +1,6 @@
 #include "minishell.h"
 
-int		return_to_main(t_list **env, char *line, int ret_gnl, char *saved_path)
+int	return_to_main(t_list **env, char *line, int ret_gnl, char *saved_path)
 {
 	if (saved_path)
 		free(saved_path);
@@ -18,7 +18,7 @@ static void	print_token_error(char *str)
 	ft_putstr_fd("'\n", 2);
 }
 
-int			token_error_printer_hub(int err)
+int	token_error_printer_hub(int err)
 {
 	if (!err)
 		return (1);
@@ -45,7 +45,7 @@ int			token_error_printer_hub(int err)
 	return (0);
 }
 
-int			verify_line(char *line)
+int	verify_line(char *line)
 {
 	char	*skiped;
 	int		err;

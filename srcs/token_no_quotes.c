@@ -1,6 +1,6 @@
 #include "minishell.h"
 
-static int		check_symbol_nq(char *str, int i)
+static int	check_symbol_nq(char *str, int i)
 {
 	if (i == 0)
 		if (is_symbol(*str))
@@ -11,7 +11,7 @@ static int		check_symbol_nq(char *str, int i)
 	return (1);
 }
 
-static int		expand_env_nq(t_list **env, char **final_str,
+static int	expand_env_nq(t_list **env, char **final_str,
 							char **str, char **line_ptr)
 {
 	if (!(join_str_before(str, line_ptr, final_str)))
@@ -22,7 +22,7 @@ static int		expand_env_nq(t_list **env, char **final_str,
 	return (1);
 }
 
-static int		format_special_nq(t_list **env, char **final_str,
+static int	format_special_nq(t_list **env, char **final_str,
 								char **str, char **line_ptr)
 {
 	if (**str == '\\')
@@ -51,7 +51,7 @@ static int		format_special_nq(t_list **env, char **final_str,
 ** It returns a malloc() address to a null-terminated string.
 */
 
-static char		*end_no_quotes(char **str, char **line_ptr, char **final_str)
+static char	*end_no_quotes(char **str, char **line_ptr, char **final_str)
 {
 	if (!(join_str_before(str, line_ptr, final_str)))
 		return (NULL);
@@ -60,7 +60,7 @@ static char		*end_no_quotes(char **str, char **line_ptr, char **final_str)
 	return (*final_str);
 }
 
-char			*no_quotes(t_list **env, char **line_ptr)
+char	*no_quotes(t_list **env, char **line_ptr)
 {
 	char		*str;
 	char		*final_str;
@@ -68,18 +68,20 @@ char			*no_quotes(t_list **env, char **line_ptr)
 	int			ret;
 
 	str = *line_ptr;
-	if (!(final_str = ft_strnew(0)))
+	final_str = ft_strnew(0);
+	if (!final_str)
 		return (NULL);
 	i = 0;
 	while (*str)
 	{
 		if (!check_symbol_nq(str, i))
-			break;
+			break ;
 		i = 1;
-		if ((ret = format_special_nq(env, &final_str, &str, line_ptr)) == -1)
+		ret = format_special_nq(env, &final_str, &str, line_ptr);
+		if (ret == -1)
 			return (NULL);
 		else if (ret == 1)
-			continue;
+			continue ;
 		else
 			str++;
 	}

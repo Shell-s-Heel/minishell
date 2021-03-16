@@ -1,6 +1,6 @@
 #include "minishell.h"
 
-int		is_builtin(t_command *cmd)
+int	is_builtin(t_command *cmd)
 {
 	char	*name[8];
 	int		builtin_code;
@@ -24,7 +24,7 @@ int		is_builtin(t_command *cmd)
 	return (0);
 }
 
-int		execute_builtin(t_list **env, t_command *cmd, int builtin_code,
+int	execute_builtin(t_list **env, t_command *cmd, int builtin_code,
 						t_list **export)
 {
 	int		ret;

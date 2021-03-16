@@ -7,11 +7,13 @@ static void	update_export_underscore(t_list **env, t_command *cmd)
 	int		len;
 
 	last = last_arg(cmd);
-	if (!(needle = ft_strchr(last, '=')))
+	needle = ft_strchr(last, '=');
+	if (!(needle))
 		len = ft_strlen(last);
 	else
 		len = needle - last;
-	if (!(needle = ft_substr(last, 0, len)))
+	needle = ft_substr(last, 0, len);
+	if (!(needle))
 		return ;
 	update_underscore(env, needle);
 	free(needle);
@@ -47,9 +49,9 @@ static int	export_builtin_arg(t_list **env, t_list **export,
 	while (cmd->command[++i])
 	{
 		if (!check_export_arg(cmd->command[i], cmd))
-			continue;
+			continue ;
 		if (piped)
-			continue;
+			continue ;
 		g_exit_status = 0;
 		if (ft_strchr(&cmd->command[i][0], '=') != NULL)
 		{
@@ -62,29 +64,34 @@ static int	export_builtin_arg(t_list **env, t_list **export,
 	return (RT_SUCCESS);
 }
 
-int			export_builtin(t_list **env, t_command *cmd, t_list **export)
+int	export_option_err_mess(t_command *cmd)
+{
+	char	buf[3];
+
+	ft_memset(buf, 0, sizeof(buf));
+	error_msg("bash", cmd, ft_strncpy(buf, cmd->command[1], 2),
+		"invalid option");
+	g_exit_status = 2;
+	return (RT_SUCCESS);
+}
+
+int	export_builtin(t_list **env, t_command *cmd, t_list **export)
 {
 	char	**export_tab;
-	char	buf[3];
 	int		piped;
 
 	update_export_underscore(env, cmd);
 	if (cmd->command[0] && !cmd->command[1])
 	{
-		if (!(export_tab = env_list_to_tab(*export)))
+		export_tab = env_list_to_tab(*export);
+		if (!(export_tab))
 			return (RT_FAIL);
 		print_export(export_tab, cmd->fd);
 		ft_freetab(export_tab);
 		return (RT_SUCCESS);
 	}
-	ft_memset(buf, 0, sizeof(buf));
 	if (cmd->command[1] && cmd->command[1][0] == '-')
-	{
-		error_msg("bash", cmd, ft_strncpy(buf, cmd->command[1], 2),
-				"invalid option");
-		g_exit_status = 2;
-		return (RT_SUCCESS);
-	}
+		return (export_option_err_mess(cmd));
 	piped = is_piped(cmd->fd);
 	if (cmd->command[0] && cmd->command[1])
 		export_builtin_arg(env, export, cmd, piped);

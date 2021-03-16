@@ -7,13 +7,16 @@ static int	update_pwd(t_list **env, char *cmd_arg)
 	char	*old_pwd;
 
 	old_pwd = find_env_value(env, "PWD");
-	if (!(tmp = ft_strjoin("OLDPWD=", old_pwd)))
+	tmp = ft_strjoin("OLDPWD=", old_pwd);
+	if (!(tmp))
 		return (RT_FAIL);
 	add_env_variable(env, tmp);
 	free(tmp);
-	if (!(pwd = getcwd(NULL, 0)))
+	pwd = getcwd(NULL, 0);
+	if (!(pwd))
 		return (GETCWD_ERR);
-	if (!(tmp = ft_strjoin("PWD=", pwd)))
+	tmp = ft_strjoin("PWD=", pwd);
+	if (!(tmp))
 		return (RT_FAIL);
 	if (cmd_arg && ft_strcmp(cmd_arg, "//") == 0)
 	{
@@ -26,7 +29,7 @@ static int	update_pwd(t_list **env, char *cmd_arg)
 	return (RT_SUCCESS);
 }
 
-int			check_fd_n_path(char *path, t_command *cmd, int *err)
+static int	check_fd_n_path(char *path, t_command *cmd, int *err)
 {
 	struct stat	fd_check;
 	struct stat	path_check;
@@ -52,7 +55,26 @@ int			check_fd_n_path(char *path, t_command *cmd, int *err)
 	return (0);
 }
 
-int			cd_builtin(t_list **env, t_command *cmd)
+static int	change_directory_n_update_env(t_list **env, t_command *cmd,
+											char *path)
+{
+	int	err;
+
+	if (chdir(path) == -1)
+	{
+		err = ERRNO_CD;
+		return (cd_error(err, path));
+	}
+	err = update_pwd(env, cmd->command[1]);
+	if (err == RT_FAIL)
+		return (RT_FAIL);
+	if (err)
+		return (cd_error(err, path));
+	g_exit_status = 0;
+	return (0);
+}
+
+int	cd_builtin(t_list **env, t_command *cmd)
 {
 	char	*path;
 	char	cwd[300];
@@ -66,17 +88,13 @@ int			cd_builtin(t_list **env, t_command *cmd)
 		path = cmd->command[1];
 	ft_memset(cwd, 0, sizeof(cwd));
 	if (!*path)
-		if (!(path = getcwd(cwd, 300)) && (err == GETCWD_ERR))
+	{
+		path = getcwd(cwd, 300);
+		if (!path && (err == GETCWD_ERR))
 			return (cd_error(err, cmd->command[1]));
+	}
 	if (check_fd_n_path(path, cmd, &err))
 		return (cd_error(err, path));
-	if (chdir(path) == -1)
-		if ((err = ERRNO_CD))
-			return (cd_error(err, path));
-	if ((err = update_pwd(env, cmd->command[1])) == RT_FAIL)
-		return (RT_FAIL);
-	if (err)
-		return (cd_error(err, path));
-	g_exit_status = 0;
+	change_directory_n_update_env(env, cmd, path);
 	return (0);
 }

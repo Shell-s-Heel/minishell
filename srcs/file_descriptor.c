@@ -1,6 +1,6 @@
 #include "minishell.h"
 
-void		dup_fd(int *fd)
+void	dup_fd(int *fd)
 {
 	if (fd[0] != 0)
 	{
@@ -14,7 +14,7 @@ void		dup_fd(int *fd)
 	}
 }
 
-void		close_fd(int *fd)
+void	close_fd(int *fd)
 {
 	if (fd[1] != 1 && fd[1] != -1)
 		close(fd[1]);

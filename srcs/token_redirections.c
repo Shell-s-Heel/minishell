@@ -15,7 +15,8 @@ static int	open_file(int open_code, int *fd_command, char *file)
 	{
 		if (fd_command[0] != 0)
 			close(fd_command[0]);
-		if ((fd_command[0] = open(file, O_RDONLY)) == -1)
+		fd_command[0] = open(file, O_RDONLY);
+		if (fd_command[0] == -1)
 			fd_command[3] = errno;
 		return (1);
 	}
@@ -44,7 +45,7 @@ static int	open_file(int open_code, int *fd_command, char *file)
 ** of the processed string.
 */
 
-int			redirections(t_list **env, char **line_ptr, t_command *i_cmd)
+int	redirections(t_list **env, char **line_ptr, t_command *i_cmd)
 {
 	int		open_code;
 	char	*file;
@@ -56,7 +57,8 @@ int			redirections(t_list **env, char **line_ptr, t_command *i_cmd)
 	if (*(*line_ptr + 1) == '>' && ++open_code)
 		*line_ptr += 1;
 	*line_ptr = skip_char((*line_ptr + 1), ' ');
-	if (!(file = expand_token(env, line_ptr)))
+	file = expand_token(env, line_ptr);
+	if (!file)
 		return (RT_FAIL);
 	open_file(open_code, i_cmd->fd, file);
 	if (i_cmd->file)

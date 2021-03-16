@@ -38,8 +38,8 @@ static int	handle_quotes(char *line, int i, char *quote)
 	return (1);
 }
 
-int			check_unexpected_token(char *line, int *err)
-{ 
+int	check_unexpected_token(char *line, int *err)
+{
 	char	quote;
 	int		space;
 	int		i;
@@ -55,7 +55,8 @@ int			check_unexpected_token(char *line, int *err)
 			handle_quotes(line, i, &quote);
 		if (!quote && is_token(line[i]))
 		{
-			if ((*err = token_hub(line, i, space)))
+			*err = token_hub(line, i, space);
+			if (*err)
 				return (*err);
 			space = 0;
 		}

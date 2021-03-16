@@ -62,13 +62,6 @@ static void	eraser_checker(char *line)
 	}
 }
 
-	// Now here we also check if g_line_eraser is 1 with the eraser_checker, bc
-	// if we type "lsCTRL-C" it WILL enter the if(!(read...) and then it'll
-	// enter here, so we need to erase line since we have typed ctrlC, for
-	// But if we have typed "lsCTRL-D" instead, then the ctrlC signal would not
-	// have been called, therefore g_line_eraser would be 0, Therefore
-	// eraser_checker would not delete the line, and so we would enter on the
-	// first if statement here.
 static int	check_ctrld(char **line)
 {
 	eraser_checker(*line);
@@ -109,51 +102,37 @@ static int	check_ctrld(char **line)
 **
 ** When ctrl^C is sent, line is empty because if it exists it has been erased.
 */
-	// now here if ctrl is typed, g_line_eraser is set to 1 inside the 
-	// display_prompt() fucntion, because it can enter the while loop down
-	// below and still be waiting for a ctrlC signal. The first ctrlD will not
-	// enter on the if (!(read...), so if we type "lsCTRL-DCTRL-C", the
-	// eraser_checker will check if g_line_eraser is 1 (before it was still
-	// 0 since inside the first signal handler call, g_line_eraser was nothing
-	// being set to 1, but now it's).
-	// So now eraser_checker WILL ideed memset the line since we have typed
-	// "lsCTRL-DCTRL-C" and as ctrlC was typed, we have to "erase" line.
-	// btw this signal will be active and waiting for any signal untill this 
-	// very functions returns I suppose, so it will be active and waiting for
-	// the signal inside the check_ctrld() function too, that is why we dont
-	// need to call signal() there again.
 
-static void	display_prompt()
+static void	display_prompt(void)
 {
 	//if (g_line_eraser == 0)
 		//ft_putstr_fd("\033[1;32mminishell$\033[0m ", 1);
 }
 
-int		gnl_ctrld(int fd, char **line)
+int	gnl_ctrld(int fd, char **line)
 {
 	static char		buf[MAX_FD][BUFFER_SIZE + 1];
 	char			*adr;
 
-	if (BUFFER_SIZE < 1 || fd < 0 || !line ||
-			fd > MAX_FD || read(fd, buf[fd], 0) == -1)
+	if (BUFFER_SIZE < 1 || fd < 0 || !line
+		|| fd > MAX_FD || read(fd, buf[fd], 0) == -1)
 		return (-1);
 	signal(SIGINT, ctrl_c_handler);
 	display_prompt();
-	if (!(*line = ft_strnew(0)))
-		return (0);
-	while (!(adr = ft_strchr(buf[fd], '\n')))
+	*line = ft_strnew(0);
+	adr = NULL;
+	while (!adr)
 	{
-		if (!(join_newstr(line, buf[fd])))
-			return (-1);
+		join_newstr(line, buf[fd]);
 		ft_memset(buf[fd], 0, BUFFER_SIZE);
 		if (!(read(fd, buf[fd], BUFFER_SIZE)))
 			if (!check_ctrld(line))
 				return (0);
 		eraser_checker(*line);
+		adr = ft_strchr(buf[fd], '\n');
 	}
 	*adr = 0;
-	if (!(join_newstr(line, buf[fd])))
-		return (-1);
+	join_newstr(line, buf[fd]);
 	ft_strncpy(buf[fd], adr + 1, sizeof(buf[fd]));
 	return (1);
 }

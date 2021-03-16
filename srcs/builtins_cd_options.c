@@ -4,7 +4,8 @@ static char	*get_old(t_list **env, int *err)
 {
 	char	*old;
 
-	if (!(old = find_env_value(env, "OLDPWD")))
+	old = find_env_value(env, "OLDPWD");
+	if (!old)
 		*err = OLDPWD_NOT_SET;
 	return (old);
 }
@@ -13,7 +14,8 @@ static char	*get_home(t_list **env, int *err)
 {
 	char	*home;
 
-	if (!(home = find_env_value(env, "HOME")))
+	home = find_env_value(env, "HOME");
+	if (!home)
 		*err = HOME_NOT_SET;
 	return (home);
 }
@@ -37,15 +39,18 @@ static char	*old_option(t_list **env, char **cmd, int *fd, int *err)
 	path = NULL;
 	if (cmd[1][1])
 		*err = INVAL_CD_OPTION;
-	else if ((path = get_old(env, err)))
+	else
 	{
+		path = get_old(env, err);
+		if (!path)
+			return (path);
 		ft_putstr_fd(path, fd[1]);
 		ft_putchar_fd('\n', fd[1]);
 	}
 	return (path);
 }
 
-char		*check_options(t_list **env, char **cmd, int *fd, int *err)
+char	*check_options(t_list **env, char **cmd, int *fd, int *err)
 {
 	char	*path;
 

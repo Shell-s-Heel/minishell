@@ -12,20 +12,21 @@ char	*last_arg(t_command *cmd)
 	return (cmd->command[i]);
 }
 
-int		update_underscore(t_list **env, char *path_cmd)
+int	update_underscore(t_list **env, char *path_cmd)
 {
 	char	*keyvalue;
 
-	if (!(keyvalue = ft_strjoin("_=", path_cmd)))
+	keyvalue = ft_strjoin("_=", path_cmd);
+	if (!(keyvalue))
 		return (1);
 	add_env_variable(env, keyvalue);
 	free(keyvalue);
 	return (1);
 }
 
-int		ft_count_tab(char **tab)
+int	ft_count_tab(char **tab)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	if (tab == NULL)
@@ -35,39 +36,12 @@ int		ft_count_tab(char **tab)
 	return (i);
 }
 
-void	print_cmd(t_command *cmd)/////////delete
-{
-	int	i;
-
-	printf(LINE(COMMAND));
-	printf("file : %s\t\t\tfd[0] : %d\tfd[1] : %d\n",
-			cmd->file, cmd->fd[0], cmd->fd[1]);
-	i = -1;
-	while (cmd->command[++i])
-		printf("cmd->command[%d] = |%s|\n", i, cmd->command[i]);
-	printf("cmd->command[%d] = |%s|\n", i, cmd->command[i]);
-	printf(LINE2);
-	fflush(stdout);
-}/////////delete
-
-void	print_array(char **arr)
-{
-	int	i;
-
-	printf("###printarray####\n");
-	i = -1;
-	while (arr[++i])
-		printf("str[%d] : |%s|\n", i, arr[i]);
-	printf("str[%d] : |%s|\n", i, arr[i]);
-	fflush(stdout);
-}
-
 /*
 ** while the next index array of the env command exists, compare the current
 ** index with the next one (meaning envir[i] is a char bigger than envir[i + 1].
 ** ex B, A), then, swap the lines.
 */
-char		**alpha_order_array(char **export_tab)
+char	**alpha_order_array(char **export_tab)
 {
 	char	*export_line;
 	int		i;

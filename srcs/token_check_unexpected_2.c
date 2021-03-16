@@ -1,6 +1,6 @@
 #include "minishell.h"
 
-int			token_pipe(char *line, int i, int space)
+int	token_pipe(char *line, int i, int space)
 {
 	char	*skiped;
 
@@ -21,7 +21,7 @@ int			token_pipe(char *line, int i, int space)
 	return (0);
 }
 
-int			token_sc(char *line, int i, int space)
+int	token_sc(char *line, int i, int space)
 {
 	char	*skiped;
 

@@ -44,12 +44,12 @@
 ** 0 = EOF
 ** -1 = error
 */
-void		print_tok(void *content)
+void	print_tok(void *content)
 {
 	printf("unexpanded : |%s|\t\tfd0: %d\tfd1: %d\n",
-			((t_command*)content)->unexpanded,
-			((t_command*)content)->fd[0],
-			((t_command*)content)->fd[1]);
+		((t_command*)content)->unexpanded,
+		((t_command*)content)->fd[0],
+		((t_command*)content)->fd[1]);
 }
 
 /*
@@ -58,13 +58,13 @@ void		print_tok(void *content)
 ** message for when the user types a command but $PATH is unset or not with it's
 ** correct paths.
 */
-int			execute_cmd(t_list **env, t_command *cmd, t_list **export, char *s_path)
+int	execute_cmd(t_list **env, t_command *cmd, t_list **export, char *s_path)
 {
 	int		ret;
 
 //	print_cmd(cmd);//TEST - TO DELETE LATER
-
-	if ((ret = is_builtin(cmd)))
+	ret = is_builtin(cmd);
+	if (ret)
 		ret = execute_builtin(env, cmd, ret, export);
 	else
 		ret = execute_extern(env, cmd, s_path);
@@ -72,21 +72,22 @@ int			execute_cmd(t_list **env, t_command *cmd, t_list **export, char *s_path)
 	return (ret);
 }
 
-int			executer(t_list **env, t_list *cmd, t_list **export, char *saved_path)
+int	executer(t_list **env, t_list *cmd, t_list **export, char *saved_path)
 {
 	int		ret;
 	int		ret2;
 
 	while (cmd)
 	{
-		if ((ret = expander(env, COMMAND(cmd))) < 0)
+		ret = expander(env, COMMAND(cmd));
+		if (ret < 0)
 		{
 			if (ret == RT_FAIL)
 				return (RT_FAIL);
 			return (RT_SUCCESS);
 		}
-		if ((ret2 = execute_cmd(env, COMMAND(cmd), export, saved_path))
-																!= RT_SUCCESS)
+		ret2 = execute_cmd(env, COMMAND(cmd), export, saved_path);
+		if (ret2 != RT_SUCCESS)
 		{
 			if (ret2 == RT_NOEXIT)
 				return (RT_SUCCESS);
@@ -109,14 +110,15 @@ int			executer(t_list **env, t_list *cmd, t_list **export, char *saved_path)
 ** Here I'm outputing a message showing the current $PATH just so the user
 ** knows that the $PATH is not set as t should be.
 */
-char		*save_path_env(t_list **env)
+char	*save_path_env(t_list **env)
 {
 	char	*saved_path;
 
-	if (!(saved_path = find_env_value(env, "PATH")))
+	saved_path = find_env_value(env, "PATH");
+	if (!(saved_path))
 		return (NULL);
-	if (ft_strstr(saved_path, "/bin") == NULL ||
-		ft_strstr(saved_path, "/sbin") == NULL)
+	if (ft_strstr(saved_path, "/bin") == NULL
+		|| ft_strstr(saved_path, "/sbin") == NULL)
 	{
 		printf("\nCurrent PATH environment variable:\nPATH=%s\n\n", saved_path);
 		return (ft_strdup(saved_path));
@@ -124,7 +126,7 @@ char		*save_path_env(t_list **env)
 	return (ft_strdup(saved_path));
 }
 
-int			main_loop(t_list **env, t_list **export)
+int	main_loop(t_list **env, t_list **export)
 {
 	t_list	*cmd;
 	char	*line;
@@ -133,11 +135,15 @@ int			main_loop(t_list **env, t_list **export)
 
 	signal(SIGQUIT, ctrl_back_slash_handler);
 	saved_path = save_path_env(env);
-	while ((ret_gnl = gnl_ctrld(0, &line)) > 0)
+	while (1)
 	{
+		ret_gnl = gnl_ctrld(0, &line);
+		if (ret_gnl < 1)
+			break ;
 		if (verify_line(line))
-			continue;
-		if (!(cmd = tokenizer(line)))
+			continue ;
+		cmd = tokenizer(line);
+		if (!(cmd))
 			return (RT_FAIL);
 		//t_lstiter(cmd, &print_tok);//TO DEL LATER
 		free(line);

@@ -1,6 +1,6 @@
 #include "minishell.h"
 
-int			verify_line_2(char *line)
+int	verify_line_2(char *line)
 {
 	char	*skiped;
 	int		err;
@@ -18,7 +18,7 @@ int			verify_line_2(char *line)
 	return (0);
 }
 
-int		arg_command(t_list **env, t_list **export, int ac, char **av)
+int	arg_command(t_list **env, t_list **export, int ac, char **av)
 {
 	t_list	*cmd;
 	char	*saved_path;
@@ -31,8 +31,9 @@ int		arg_command(t_list **env, t_list **export, int ac, char **av)
 	signal(SIGQUIT, ctrl_back_slash_handler);
 	saved_path = save_path_env(env);
 	if (verify_line(av[2]))
-		return(RT_EXIT);
-	if (!(cmd = tokenizer(av[2])))
+		return (RT_EXIT);
+	cmd = tokenizer(av[2]);
+	if (!(cmd))
 		return (RT_FAIL);
 	//ft_lstiter(cmd, &print_tok);//TO DEL LATER
 	executer(env, cmd, export, saved_path);
