@@ -82,14 +82,15 @@ int	executer(t_list **env, t_list *cmd, t_list **export, char *saved_path)
 
 	while (cmd)
 	{
-		ret = expander(env, COMMAND(cmd));
+		ret = expander(env, (t_command *)((cmd)->content));
 		if (ret < 0)
 		{
 			if (ret == RT_FAIL)
 				return (RT_FAIL);
 			return (RT_SUCCESS);
 		}
-		ret2 = execute_cmd(env, COMMAND(cmd), export, saved_path);
+		ret2 = execute_cmd(env,
+				(t_command *)((cmd)->content), export, saved_path);
 		if (ret2 != RT_SUCCESS)
 		{
 			if (ret2 == RT_NOEXIT)
