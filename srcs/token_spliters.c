@@ -12,7 +12,7 @@
 ** the end of the string.
 */
 
-int			handle_this_ghost(char *str, int i, char *ghoster, char *ghost)
+int	handle_this_ghost(char *str, int i, char *ghoster, char *ghost)
 {
 	if (*ghost == 0)
 	{
@@ -29,7 +29,7 @@ int			handle_this_ghost(char *str, int i, char *ghoster, char *ghost)
 	return (1);
 }
 
-char		*ghosting(char *str, char c, char *exception_set, int *error)
+char	*ghosting(char *str, char c, char *exception_set, int *error)
 {
 	char	*ghoster;
 	char	ghost;
@@ -39,19 +39,20 @@ char		*ghosting(char *str, char c, char *exception_set, int *error)
 	ghost = 0;
 	while (str && str[++i])
 	{
-		if ((ghoster = ft_strchr(exception_set, str[i])))
+		ghoster = ft_strchr(exception_set, str[i]);
+		if (ghoster)
 			if (!(handle_this_ghost(str, i, ghoster, &ghost)))
-				continue;
+				continue ;
 		if (str[i] == c && !ghost)
 			if ((i > 0 && str[i - 1] != '\\') || i == 0)
 				return (&(str[i]));
 	}
 	if (ghost && error)
-			*error = -1;
+		*error = -1;
 	return (NULL);
 }
 
-char		**split_count_n_array_make(char *str, char c, char *exception_set)
+char	**split_count_n_array_make(char *str, char c, char *exception_set)
 {
 	char	**split_array;
 	int		count;
@@ -59,14 +60,18 @@ char		**split_count_n_array_make(char *str, char c, char *exception_set)
 
 	count = 1;
 	i = 1;
-	while ((str = ghosting(str, c, exception_set, &i)))
+	while (1)
 	{
+		str = ghosting(str, c, exception_set, &i);
+		if (!str)
+			break ;
 		count++;
 		str++;
 	}
 	if (i == -1)
 		return (NULL);
-	if (!(split_array = (char**)malloc(sizeof(char*) * (count + 1))))
+	split_array = (char **)malloc(sizeof(char *) * (count + 1));
+	if (!(split_array))
 		return (NULL);
 	return (split_array);
 }
@@ -107,26 +112,26 @@ char		**split_count_n_array_make(char *str, char c, char *exception_set)
 **
 ** Returns a null terminated array of null terminated strings.
 */
-char		**split_with_exception(char *str, char c, char *exception_set)
+char	**split_with_exception(char *str, char c, char *exception_set)
 {
 	char	**split_array;
 	char	*c_position;
 	int		i;
 
-	if (!(split_array = split_count_n_array_make(str, c, exception_set)))
-		return (NULL);
+	split_array = split_count_n_array_make(str, c, exception_set);
 	c_position = str;
 	i = -1;
-	while ((c_position = ghosting(c_position, c, exception_set, NULL)))
+	while (1)
 	{
-		if (!(split_array[++i] = ft_substr(str, 0, (c_position - str))))
-			return (NULL);
+		c_position = ghosting(c_position, c, exception_set, NULL);
+		if (!c_position)
+			break ;
+		split_array[++i] = ft_substr(str, 0, (c_position - str));
 		str = ++c_position;
 	}
 	if (!c_position && str)
 	{
-		if (!(split_array[++i] = ft_substr(str, 0, ft_strlen(str))))
-			return (NULL);
+		split_array[++i] = ft_substr(str, 0, ft_strlen(str));
 		if (!*(skip_char(split_array[i], ' ')))
 			ft_strdel(&(split_array[i]));
 	}

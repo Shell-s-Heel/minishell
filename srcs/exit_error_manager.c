@@ -6,7 +6,7 @@
 /*   By: jfreitas <jfreitas@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/08 19:34:20 by jfreitas          #+#    #+#             */
-/*   Updated: 2021/03/07 01:38:23 by jle-corr         ###   ########.fr       */
+/*   Updated: 2021/03/16 00:44:53 by jle-corr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ void	error_msg(char *bash, t_command *cmd, char *arg, char *err_msg)
 	}
 }
 
-int		error_msg_2(char *bash, t_command *cmd, char *arg, char *err_msg)
+int	error_msg_2(char *bash, t_command *cmd, char *arg, char *err_msg)
 {
 	if (bash)
 		ft_putstr_fd("bash: ", cmd->fd[2]);

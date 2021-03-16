@@ -11,7 +11,7 @@
 ** It returns a malloc() address to a null-terminated string.
 */
 
-char			*simple_quotes(char **line_ptr)
+char	*simple_quotes(char **line_ptr)
 {
 	char		*word_object;
 	char		*tmp;
@@ -21,12 +21,13 @@ char			*simple_quotes(char **line_ptr)
 	while (**line_ptr != '\'')
 		*line_ptr += 1;
 	*line_ptr += 1;
-	if (!(word_object = ft_substr(tmp, 0, (*line_ptr - tmp))))
+	word_object = ft_substr(tmp, 0, (*line_ptr - tmp));
+	if (!word_object)
 		return (NULL);
 	return (word_object);
 }
 
-char			*quotes(t_list **env, char **line_ptr)
+char	*quotes(t_list **env, char **line_ptr)
 {
 	char		*word_object;
 

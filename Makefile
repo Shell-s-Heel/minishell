@@ -57,7 +57,8 @@ SRCS = $(addprefix $(SRCPATH)/, builtin_env_unset.c builtins_2.c \
 	   token_error_handler.c loop_errors.c token_check_unexpected.c \
 	   token_check_unexpected_2.c token_check_unexpected_3.c builtin_cd.c \
 	   builtins_cd_err.c builtins_cd_options.c arg_command.c \
-	   token_expand_token.c builtin_echo.c builtin_export_print.c)
+	   token_expand_token.c builtin_echo.c builtin_export_print.c \
+	   testing_print.c)
 
 ##### OBJS #####
 OBJ = $(SRCS:$(SRCPATH)/%.c=$(OBJPATH)/%.o)

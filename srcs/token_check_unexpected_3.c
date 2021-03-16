@@ -1,6 +1,6 @@
 #include "minishell.h"
 
-int			token_rmm(char *line, int i)
+int	token_rmm(char *line, int i)
 {
 	char	*skiped;
 
@@ -12,7 +12,7 @@ int			token_rmm(char *line, int i)
 	return (0);
 }
 
-int			token_rm(char *line, int i)
+int	token_rm(char *line, int i)
 {
 	char	*skiped;
 
@@ -26,7 +26,7 @@ int			token_rm(char *line, int i)
 	return (0);
 }
 
-int			token_rll(char *line, int i)
+int	token_rll(char *line, int i)
 {
 	char	*skiped;
 
@@ -40,7 +40,7 @@ int			token_rll(char *line, int i)
 	return (UTOKEN_HD);
 }
 
-int			token_rl(char *line, int i)
+int	token_rl(char *line, int i)
 {
 	char	*skiped;
 

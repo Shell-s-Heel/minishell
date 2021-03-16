@@ -7,22 +7,25 @@
 ** that it exists just for the record to know how many levels of shell there
 ** are currenclty in the current tab/window.
 */
-int		increase_shlvl(t_list **env)
+int	increase_shlvl(t_list **env)
 {
-	char	*keyvalue;;
+	char	*keyvalue;
 	char	*shlvl_str;
 	int		shlvl_nb;
 
-	if (!(shlvl_str = find_env_value(env, "SHLVL")))
+	shlvl_str = find_env_value(env, "SHLVL");
+	if (!(shlvl_str))
 	{
 		add_env_variable(env, "SHLVL=1");
 		return (0);
 	}
 	shlvl_nb = ft_atoi(shlvl_str);
 	shlvl_nb++;
-	if (!(shlvl_str = ft_itoa(shlvl_nb)))
+	shlvl_str = ft_itoa(shlvl_nb);
+	if (!(shlvl_str))
 		return (RT_FAIL);
-	if (!(keyvalue = ft_strjoin("SHLVL=", shlvl_str)))
+	keyvalue = ft_strjoin("SHLVL=", shlvl_str);
+	if (!(keyvalue))
 	{
 		ft_strdel(&shlvl_str);
 		return (RT_FAIL);
@@ -33,15 +36,17 @@ int		increase_shlvl(t_list **env)
 	return (0);
 }
 
-int		set_pwd(t_list **env)
+int	set_pwd(t_list **env)
 {
 	char	*cwd;
 	char	*pwd;
 
-	if ((cwd = find_env_value(env, "PWD")))
+	cwd = find_env_value(env, "PWD");
+	if ((cwd))
 		return (1);
 	cwd = getcwd(NULL, 0);
-	if (!(pwd = ft_strjoin("PWD=", cwd)))
+	pwd = ft_strjoin("PWD=", cwd);
+	if (!(pwd))
 	{
 		ft_strdel(&cwd);
 		return (RT_FAIL);
@@ -60,7 +65,8 @@ char	**export_env(char **ep)
 
 	i = 0;
 	j = 0;
-	if (!(export_tab = (char**)malloc(sizeof(char*) * ft_count_tab(ep) + 1)))
+	export_tab = (char **)malloc(sizeof(char *) * ft_count_tab(ep) + 1);
+	if (!(export_tab))
 		return (NULL);
 	while (ep[i])
 	{
@@ -72,7 +78,7 @@ char	**export_env(char **ep)
 	return (export_tab);
 }
 
-int		main(int ac, char **av, char **ep)
+int	main(int ac, char **av, char **ep)
 {
 	t_list	*env;
 	t_list	*export;
@@ -92,8 +98,8 @@ int		main(int ac, char **av, char **ep)
 		return (RT_FAIL);
 	g_exit_status = 0;
 	g_line_eraser = 0;
-	if (ac > 1)//TO DEL LATER
-		return (arg_command(&env, &export, ac, av));//TO DEL LATER
+	if (ac > 1)
+		return (arg_command(&env, &export, ac, av));
 	if (main_loop(&env, &export) == RT_FAIL)
 		return (RT_FAIL);
 	ft_lstclear(&export, &clear_envlist);

@@ -31,7 +31,7 @@
 ** means a pipe had been opened before to write into, so the current one must
 ** read into the read end pipe created before, which had been saved in fd_tmp.
 */
-static int		pipe_it(char **pipeline, int i,
+static int	pipe_it(char **pipeline, int i,
 		int *fd_command, int *fd_tmp)
 {
 	int			piped_fd[2];
@@ -133,30 +133,33 @@ static int		pipe_it(char **pipeline, int i,
 ** 3 - Fork a child which will execute the exec with execve();
 */
 
-static int		add_link(t_list **head, t_command *i_command)
+static int	add_link(t_list **head, t_command *i_command)
 {
 	t_list		*cmd;
 
-	if (!(cmd = ft_lstnew(i_command)))
+	cmd = ft_lstnew(i_command);
+	if (!cmd)
 		return (RT_FAIL);
 	ft_lstadd_back(head, cmd);
 	return (RT_SUCCESS);
 }
 
-int				pipeline_n_link(t_list **head, char *execution_line)
+int	pipeline_n_link(t_list **head, char *execution_line)
 {
 	char		**pipeline;
 	t_command	*i_command;	
 	int			fd_tmp;
 	int			i;
 
-	if (!(pipeline = split_with_exception(execution_line, '|', "\'\"")))
+	pipeline = split_with_exception(execution_line, '|', "\'\"");
+	if (!pipeline)
 		return (RT_FAIL);
 	fd_tmp = -1;
 	i = -1;
 	while (pipeline[++i])
 	{
-		if (!(i_command = init_command(pipeline[i])))
+		i_command = init_command(pipeline[i]);
+		if (!i_command)
 			return (tokenize_error_pipe(head, pipeline, i, fd_tmp));
 		pipe_it(pipeline, i, i_command->fd, &fd_tmp);
 		if (add_link(head, i_command) == RT_FAIL)

@@ -12,8 +12,8 @@ static int	create_env_struct(char *keyvalue, t_env *new)
 	}
 	else
 	{
-		new->key = ft_substr(keyvalue, 0, ft_strlen(keyvalue) -
-															ft_strlen(needle));
+		new->key = ft_substr(keyvalue, 0, ft_strlen(keyvalue)
+				- ft_strlen(needle));
 		new->value = ft_strdup(needle);
 	}
 	return (1);
@@ -30,7 +30,7 @@ static int	create_env_struct(char *keyvalue, t_env *new)
 **		t_list *: a pointer to the head of a list.
 */
 
-t_list		*create_env_list(char **envp)
+t_list	*create_env_list(char **envp)
 {
 	t_env	*new;
 	t_list	*env;
@@ -39,7 +39,8 @@ t_list		*create_env_list(char **envp)
 	env = NULL;
 	while (*envp != NULL)
 	{
-		if (!(new = (t_env*)malloc(sizeof(t_env))))
+		new = (t_env*)malloc(sizeof(t_env));
+		if (!(new))
 			return (NULL);
 		create_env_struct(*envp, new);
 		tmp_env = ft_lstnew(new);
@@ -60,25 +61,21 @@ t_list		*create_env_list(char **envp)
 **		char **: a string table containing entries with the format KEY=VALUE
 */
 
-char		**env_list_to_tab(t_list *env)
+char	**env_list_to_tab(t_list *env)
 {
-	size_t	count;
-	t_list	*tmp_env;
+	int		count;
 	char	**new_env;
 	char	*tmp_str;
 
-	count = 1;
 	if (!env)
 		return (NULL);
-	tmp_env = env;
-	while ((tmp_env = tmp_env->next))
-		count++;
-	if (!(new_env = (char **)malloc(sizeof(char *) * (count + 1))))
+	count = ft_lstsize(env);
+	new_env = (char **)malloc(sizeof(char *) * (count + 1));
+	if (!(new_env))
 		return (NULL);
 	new_env[count] = NULL;
 	while (--count >= 0 && env != NULL)
 	{
-	//	tmp_str = ft_strjoin(ENV_KEY(env), "=");//Now the = is inside ENV_VALUE
 		tmp_str = ft_strdup(ENV_KEY(env));
 		new_env[count] = ft_strjoin(tmp_str, ENV_VALUE(env));
 		free(tmp_str);
@@ -98,13 +95,12 @@ char		**env_list_to_tab(t_list *env)
 **		char *var: a string with the format KEY=VALUE
 */
 
-void		add_env_variable(t_list **env, char *var)
+void	add_env_variable(t_list **env, char *var)
 {
 	t_env	*new;
 	t_list	*tmp_env;
 
-	if (!(new = (t_env*)malloc(sizeof(t_env))))
-		return ;
+	new = (t_env*)malloc(sizeof(t_env));
 	if (!create_env_struct(var, new))
 		return ;
 	tmp_env = *env;
@@ -138,7 +134,7 @@ void		add_env_variable(t_list **env, char *var)
 **		char *: a string that correspond to the key that was sent.
 */
 
-char		*find_env_value(t_list **env, char *key)
+char	*find_env_value(t_list **env, char *key)
 {
 	t_list	*tmp_env;
 

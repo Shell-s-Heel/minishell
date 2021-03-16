@@ -1,6 +1,6 @@
 #include "minishell.h"
 
-static void		init_fr(char **line_ptr, t_command *cmd, t_list **arg, int *ret)
+static void	init_fr(char **line_ptr, t_command *cmd, t_list **arg, int *ret)
 {
 	*line_ptr = cmd->unexpanded;
 	*line_ptr = skip_char(*line_ptr, ' ');
@@ -90,7 +90,7 @@ static void		init_fr(char **line_ptr, t_command *cmd, t_list **arg, int *ret)
 **						which will be malloc in the function which creates links
 */
 
-static void		add_arg_to_list(t_list **arg, char *wobj)
+static void	add_arg_to_list(t_list **arg, char *wobj)
 {
 	t_list		*new;
 
@@ -100,13 +100,13 @@ static void		add_arg_to_list(t_list **arg, char *wobj)
 	ft_lstadd_front(arg, new);
 }
 
-static char		**convert_str_linkedlist_to_str_array(t_list *arg)
+static char	**convert_str_linkedlist_to_str_array(t_list *arg)
 {
 	int			size_list;
 	char		**str_arr;
 
 	size_list = ft_lstsize(arg);
-	str_arr = (char **)malloc(sizeof(char*) * (size_list + 1));
+	str_arr = (char **)malloc(sizeof(char *) * (size_list + 1));
 	str_arr[size_list] = NULL;
 	while (arg)
 	{
@@ -116,7 +116,7 @@ static char		**convert_str_linkedlist_to_str_array(t_list *arg)
 	return (str_arr);
 }
 
-static int		add_arglist_to_cmd(t_command *i_command, t_list **arg)
+static int	add_arglist_to_cmd(t_command *i_command, t_list **arg)
 {
 	char		**str_arr;
 
@@ -126,7 +126,7 @@ static int		add_arglist_to_cmd(t_command *i_command, t_list **arg)
 	return (1);
 }
 
-int				expander(t_list **env, t_command *i_command)
+int	expander(t_list **env, t_command *i_command)
 {
 	int			ret;
 	char		*line_ptr;
@@ -138,7 +138,8 @@ int				expander(t_list **env, t_command *i_command)
 	{
 		if (*line_ptr && (*line_ptr == '>' || *line_ptr == '<'))
 		{
-			if ((ret = redirections(env, &line_ptr, i_command)) < 0)
+			ret = redirections(env, &line_ptr, i_command);
+			if (ret < 0)
 				return (return_expander(&arg, ret, i_command));
 		}
 		else

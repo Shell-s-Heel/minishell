@@ -3,11 +3,11 @@
 static void	print_getcwd_err_message(void)
 {
 	ft_putstr_fd("error retrieving current directory: getcwd: cannot access\
-													parent directories: ", 2);
+ parent directories: ", 2);
 	ft_putstr_fd(strerror(errno), 2);
 }
 
-int			cd_error(int err, char *path)
+int	cd_error(int err, char *path)
 {
 	g_exit_status = 1;
 	if (err == CD_FIFO)

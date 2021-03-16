@@ -1,6 +1,6 @@
 #include "minishell.h"
 
-int				tokenize_error_pipe(t_list **head, char **pipeline,
+int	tokenize_error_pipe(t_list **head, char **pipeline,
 									int i, int fd_tmp)
 {
 	if (fd_tmp != -1)
@@ -13,7 +13,7 @@ int				tokenize_error_pipe(t_list **head, char **pipeline,
 	return (RT_FAIL);
 }
 
-void			*tokenize_error_sc(t_list **head, char **array, char *line)
+void	*tokenize_error_sc(t_list **head, char **array, char *line)
 {
 	ft_freetab(array);
 	if (head)
@@ -22,7 +22,7 @@ void			*tokenize_error_sc(t_list **head, char **array, char *line)
 	return (NULL);
 }
 
-int				return_expander(t_list **arg, int ret, t_command *cmd)
+int	return_expander(t_list **arg, int ret, t_command *cmd)
 {
 	if (ret == RT_FAIL)
 		return (RT_FAIL);

@@ -1,6 +1,6 @@
 #include "minishell.h"
 
-static void		link_lists(t_list **head, t_list *new)
+static void	link_lists(t_list **head, t_list *new)
 {
 	t_list		*tmp;
 
@@ -15,7 +15,7 @@ static void		link_lists(t_list **head, t_list *new)
 	tmp->next = new;
 }
 
-t_list			*tokenizer(char *line)
+t_list	*tokenizer(char *line)
 {
 	int			i;
 	t_list		*head;
@@ -24,7 +24,8 @@ t_list			*tokenizer(char *line)
 	char		*skiped;
 
 	head = NULL;
-	if (!(execution_lines = split_with_exception(line, ';', "\'\"")))
+	execution_lines = split_with_exception(line, ';', "\'\"");
+	if (!(execution_lines))
 		return (NULL);
 	i = -1;
 	while (execution_lines[++i])

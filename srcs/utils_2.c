@@ -1,14 +1,22 @@
 #include "minishell.h"
 
-static int		is_clearable(char c)
+static int	is_clearable(char c)
 {
-	return (c == ' ' || c == '\n' || c == '\t' ||
-			c == '\v' || c == '\f' || c == '\r');
+	return (c == ' ' || c == '\n' || c == '\t' || c == '\v'
+		|| c == '\f' || c == '\r');
 }
 
-static int		is_skippable(char c)
+static int	is_skippable(char c)
 {
 	return (c == '-' || c == '+');
+}
+
+int	ternarie_return(int sign)
+{
+	if (sign > 0)
+		return (-1);
+	else
+		return (0);
 }
 
 long long int	ft_long_long_atoi(const char *str)
@@ -33,6 +41,6 @@ long long int	ft_long_long_atoi(const char *str)
 		i++;
 	}
 	if (i > 19 || res >= 9223372036854775808ULL)
-		return (sign > 0 ? -1 : 0);
+		return (ternarie_return(sign));
 	return (res * sign);
 }

@@ -13,7 +13,7 @@ static void	print_export_2(char **alpha_order, int len, int i, int *fd)
 	free(key);
 }
 
-void		print_export(char **export_tab, int *fd)
+void	print_export(char **export_tab, int *fd)
 {
 	char	**alpha_order;
 	int		i;
@@ -21,7 +21,8 @@ void		print_export(char **export_tab, int *fd)
 
 	i = 0;
 	len = 0;
-	if (!(alpha_order = alpha_order_array(export_tab)))
+	alpha_order = alpha_order_array(export_tab);
+	if (!alpha_order)
 		return ;
 	while (alpha_order[i])
 	{

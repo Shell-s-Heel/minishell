@@ -6,7 +6,7 @@
 /*   By: jfreitas <jfreitas@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/08 19:16:50 by jfreitas          #+#    #+#             */
-/*   Updated: 2021/03/15 02:16:13 by jfreitas         ###   ########.fr       */
+/*   Updated: 2021/03/16 00:33:23 by jle-corr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,6 @@ static void	cmd_found_once(t_command *cmd, char **split_path, int j)
 		}
 	}
 }
-
 
 static void	cmd_found_more_times_1(t_command *cmd, char **split_path)
 {
@@ -107,7 +106,7 @@ static void	cmd_found_more_times_3(t_command *cmd, char **split_path)
 	}
 }
 
-void		*test_path_left_right_2(t_command *cmd, char **split, int rt, int j)
+void	*test_path_left_right_2(t_command *cmd, char **split, int rt, int j)
 {
 	if (rt == -1 && j == 0)
 	{

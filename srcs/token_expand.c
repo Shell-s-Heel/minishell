@@ -1,6 +1,6 @@
 #include "minishell.h"
 
-char			*expand_doll_digit(char digit)
+char	*expand_doll_digit(char digit)
 {
 	char		*expanded;
 
@@ -11,16 +11,17 @@ char			*expand_doll_digit(char digit)
 	return (expanded);
 }
 
-char			*expand_exit_status()
+char	*expand_exit_status(void)
 {
 	char		*expanded;
 
-	if (!(expanded = ft_itoa(g_exit_status)))
+	expanded = ft_itoa(g_exit_status);
+	if (!expanded)
 		return (NULL);
 	return (expanded);
 }
 
-char			*check_special_value(char **line_ptr, char quote)
+char	*check_special_value(char **line_ptr, char quote)
 {
 	char		*value;
 
@@ -43,7 +44,7 @@ char			*check_special_value(char **line_ptr, char quote)
 	return (value);
 }
 
-char			*doll_expand(t_list **env, char **line_ptr, char quote)
+char	*doll_expand(t_list **env, char **line_ptr, char quote)
 {
 	char		*doll;
 	char		*str_env;
@@ -52,29 +53,31 @@ char			*doll_expand(t_list **env, char **line_ptr, char quote)
 	*line_ptr += 1;
 	doll = *line_ptr;
 	value = NULL;
-	if ((value = check_special_value(line_ptr, quote)))
+	value = check_special_value(line_ptr, quote);
+	if (value)
 		return (value);
 	while (**line_ptr && !is_symbol_doll(**line_ptr)
-			&& authorized_char(**line_ptr))
+		&& authorized_char(**line_ptr))
 		*line_ptr += 1;
-	if (!(doll = ft_substr(doll, 0, (*line_ptr - doll))))
+	doll = ft_substr(doll, 0, (*line_ptr - doll));
+	if (!doll)
 		return (NULL);
-	if (!(str_env = find_env_value(env, doll)))
-		if (!(value = ft_strnew(0)))
-			return (NULL);
+	str_env = find_env_value(env, doll);
+	if (!str_env)
+		value = ft_strnew(0);
 	if (!value)
-		if (!(value = ft_strdup(str_env)))
-			return (NULL);
+		value = ft_strdup(str_env);
 	free(doll);
 	return (value);
 }
 
-int				expand_doll_quote(t_list **env, char **str,
+int	expand_doll_quote(t_list **env, char **str,
 		char **final_str, char quote)
 {
 	char		*expanded;
 
-	if (!(expanded = doll_expand(env, str, quote)))
+	expanded = doll_expand(env, str, quote);
+	if (!expanded)
 		return (0);
 	if (!(join_newstr(final_str, expanded)))
 		return (0);
