@@ -6,7 +6,7 @@
 /*   By: jfreitas <jfreitas@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/08 19:16:50 by jfreitas          #+#    #+#             */
-/*   Updated: 2021/03/16 03:38:06 by jle-corr         ###   ########.fr       */
+/*   Updated: 2021/03/16 14:15:40 by jle-corr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,7 @@ char	*test_path_left_right(t_command *cmd, char *saved_path)
 			return (NULL);
 	}
 	else
-		split_path = ft_split_jb(&saved_path[0], '\0');
+		split_path = ft_split_jb(saved_path, '\0');
 	while (split_path[++i])
 	{
 		ret_test = test_cmd(split_path[i], cmd->command[0]);

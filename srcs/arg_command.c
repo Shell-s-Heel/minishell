@@ -35,8 +35,12 @@ int	arg_command(t_list **env, t_list **export, int ac, char **av)
 	cmd = tokenizer(av[2]);
 	if (!(cmd))
 		return (RT_FAIL);
-	//ft_lstiter(cmd, &print_tok);//TO DEL LATER
 	executer(env, cmd, export, saved_path);
 	clear_lists_exit(&cmd, env, saved_path);
 	return (g_exit_status);
 }
+
+/*
+** ft_lstiter(cmd, &print_tok);//TO DEL LATER
+**
+*/
